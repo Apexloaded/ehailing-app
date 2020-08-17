@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="previousRoute"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!isLoading">
+  <form [formGroup]="bookForm">
+    <ion-grid class="ion-padding-horizontal">
+      <ion-row>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center">
+          <h2 color="primary">Reserve A Seat</h2>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+          <ion-list class="ion-no-padding">
+            <ion-item color="light">
+              <ion-label position="floating" color="primary">Terminal From</ion-label>
+              <ion-input type="text" formControlName="surname"></ion-input>
+            </ion-item>
+            <ion-item color="light">
+              <ion-label position="floating" color="primary">Terminal To</ion-label>
+              <ion-input type="text" formControlName="otherName"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+          <ion-list class="ion-no-padding">
+            <ion-item color="light">
+              <ion-row>
+                <ion-col size="6" size-xl="6" offset-xl="3" class="ion-no-padding float-left">
+                  <ion-label position="floating" color="primary">Terminal From</ion-label>
+                  <ion-input type="text" formControlName="surname"></ion-input>
+                </ion-col>
+                <ion-col size="6" size-xl="6" offset-xl="3" class="ion-no-padding float-left">
+                  <ion-label position="floating" color="primary">Terminal From</ion-label>
+                  <ion-input type="text" formControlName="surname"></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+          <ion-button shape="round" expand="full" size="normal">UPDATE</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

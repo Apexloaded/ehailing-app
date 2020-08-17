@@ -9,6 +9,94 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+ @font-face {
+    font-family: 'GothicA1';
+    font-style: normal;
+    font-weight: normal;
+    src: url("./assets/fonts/GothicA1-Thin.ttf");
+}
+
+@font-face {
+    font-family: 'GothicA1';
+    font-style: normal;
+    font-weight: 200;
+    src: url("./assets/fonts/GothicA1-Thin.ttf");
+}
+
+@font-face {
+    font-family: 'GothicA1';
+    font-style: normal;
+    font-weight: 300;
+    src: url("./assets/fonts/GothicA1-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: 'GothicA1';
+    font-style: normal;
+    font-weight: 400;
+    src: url("./assets/fonts/GothicA1-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: 'GothicA1';
+    font-style: normal;
+    font-weight: 600;
+    src: url("./assets/fonts/GothicA1-SemiBold.ttf");
+}
+
+
+@font-face {
+    font-family: 'GothicA1';
+    font-style: normal;
+    font-weight: bold;
+    src: url("./assets/fonts/GothicA1-Regular.ttf");
+}
+
+h1,h2,h3,h4,h5,h6, ion-card-title, ion-title {
+    font-family: GothicA1 !important;
+    font-weight: bold;
+    color: #444444;
+    margin:0px;
+}
+
+p, ion-label, ion-text, span {
+    font-family: GothicA1 !important;
+    font-weight: normal;
+    color: #444444;
+}
+
+span, ion-card-subtitle {
+    font-family: GothicA1 !important;
+    font-weight: normal;
+    color: #acacac;
+}
+
+ion-item {
+    --ion-border-color: #efefef;
+    ion-label {
+        font-size: 14px !important;
+        span {
+            font-size: 12px;
+        }
+        h3 {
+            font-family: GothicA1;
+            font-size: .7em;
+        }
+    }
+}
+
+ion-toolbar {
+    --background: transparent;
+}
+
+.float-left {
+    float: left !important;
+}
+
+.float-right {
+    float: right !important;
+}
+
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
 
@@ -24,3 +112,7 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+ion-toolbar {
+    --background: transparent !important;
+}
