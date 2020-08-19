@@ -1,0 +1,39 @@
+:host {
+  background: #fff;
+}
+
+ion-toolbar, ion-content {
+  --background: #fff;
+}
+
+.d-flex {
+  display: flex;
+}
+
+ion-list, .list-md, ion-item {
+  --background: #fff;
+  background: #fff;
+}
+
+ion-title {
+  font-family: Bahnschrift;
+}
+
+.login-holder {
+  margin-top: 3em;
+  width: 90%;
+  margin: 0 auto;
+
+  ion-button {
+    height: 45px;
+    font-weight: bold;
+  }
+}
+
+ion-item {
+  box-shadow: 4px 8px 18px -14px rgba(14,10,115,1);
+  margin:10px 0px;
+  ion-input {
+    color: var(--ion-color-medium);
+  }
+}

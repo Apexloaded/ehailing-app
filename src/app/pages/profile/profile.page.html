@@ -1,0 +1,182 @@
+<ion-content *ngIf="isLoading">
+  <ion-spinner color="primary" name="dots"></ion-spinner>
+</ion-content>
+<ion-content *ngIf="!isLoading">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col class="ion-no-padding" size="12" size-xl="6" offset-xl="3">
+        <div class="header">
+          <div class="header-content">
+            <ion-buttons slot="start">
+              <ion-button (click)="gotoRoute(previousRoute)">
+                <ion-icon name="chevron-back-outline" slot="icon-only" color="light"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <div class="name ion-text-center">
+              <h5 class="ion-no-margin bold">{{ user.title }}. {{ user.surname }} {{ user.otherName }}</h5>
+              <small class="ion-no-margin" *ngIf="user.birthDate">Born On {{ user.birthDate | date }}</small>
+            </div>
+            <ion-buttons slot="end">
+              <ion-button (click)="openModal($event)">
+                <ion-icon name="ellipsis-vertical-outline" slot="icon-only" color="light"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </div>
+          <div class="profile-img">
+            <ion-avatar>
+              <img src="../../../assets/img/avatar.svg">
+            </ion-avatar>
+          </div>
+          <div class="menu-tab">
+            <div class="menu">
+              <ion-buttons class="bg-primary" slot="start">
+                <ion-button [routerLink]="['/','edit-profile']" color="primary">
+                  <ion-icon name="settings-outline" slot="icon-only" color="light"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-buttons class="bg-primary" slot="start">
+                <ion-button (click)="gotoRoute(previousRoute)" color="primary">
+                  <ion-icon name="folder-open-outline" slot="icon-only" color="light"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-buttons class="bg-primary" slot="start">
+                <ion-button (click)="gotoRoute(previousRoute)" color="primary">
+                  <ion-icon name="mail-unread-outline" slot="icon-only" color="light"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <div class="list-tabs">
+          <div class="quick-content">
+            <div>
+              <h6>Account Type</h6>
+              <small>{{ user.customerType }}</small>
+            </div>
+            <div class="divider"></div>
+            <div>
+              <h6>Gender</h6>
+              <small>{{ user.gender }}</small>
+            </div>
+            <div class="divider"></div>
+            <div>
+              <h6>Reward Points</h6>
+              <small class="pickedUp bold">{{ user.points }}</small>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-no-padding" size="12" size-xl="6" offset-xl="3">
+        <div class="content">
+          <ion-list class="ion-no-padding">
+            <ion-item-divider color="medium" class="ion-no-border">
+              <ion-label>
+                Contact Information
+              </ion-label>
+            </ion-item-divider>
+
+            <ion-item lines="full" color="light" *ngIf="user.email">
+              <ion-avatar>
+                <ion-icon name="mail-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="d-flex ion-no-margin ion-justify-content-between ion-align-items-center">
+                <div>
+                  <ion-title class="ion-no-padding" color="primary">Email</ion-title>
+                  <ion-text>{{ user.email }}</ion-text>
+                </div>
+                <small class="danger" *ngIf="!user.isEmailVerified">UNVERIFIED</small>
+                <small class="success" *ngIf="user.isEmailVerified">VERIFIED</small>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full" color="light" *ngIf="user.phone">
+              <ion-avatar>
+                <ion-icon name="phone-portrait-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="d-flex ion-no-margin ion-justify-content-between ion-align-items-center">
+                <div>
+                  <ion-title class="ion-no-padding" color="primary">Mobile</ion-title>
+                  <ion-text>{{ user.phone }}</ion-text>
+                </div>
+                <small class="success" *ngIf="user.isPhoneVerified">VERIFIED</small>
+                <small class="danger" *ngIf="!user.isPhoneVerified">UNVERIFIED</small>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full" color="light" *ngIf="user.phoneHome">
+              <ion-avatar>
+                <ion-icon name="home-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="ion-no-margin">
+                <ion-title class="ion-no-padding" color="primary">Home</ion-title>
+                <ion-text>{{ user.phoneHome }}</ion-text>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full" color="light" *ngIf="user.address">
+              <ion-avatar>
+                <ion-icon name="location-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="ion-no-margin">
+                <ion-title class="ion-no-padding" color="primary">Address</ion-title>
+                <ion-text>{{ user.address }}</ion-text>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full" color="light" *ngIf="user.state">
+              <ion-avatar>
+                <ion-icon name="navigate-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="ion-no-margin">
+                <ion-title class="ion-no-padding" color="primary">State</ion-title>
+                <ion-text>{{ user.state }}</ion-text>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full" color="light" *ngIf="user.country">
+              <ion-avatar>
+                <ion-icon name="planet-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="ion-no-margin">
+                <ion-title class="ion-no-padding" color="primary">Country</ion-title>
+                <ion-text>{{ user.country }}</ion-text>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-divider color="medium">
+              <ion-label>
+                Contact Person Information
+              </ion-label>
+            </ion-item-divider>
+
+            <ion-item lines="full" color="light">
+              <ion-avatar>
+                <ion-icon name="person-circle-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="d-flex ion-align-items-center ion-justify-content-between">
+                <ion-title class="ion-no-padding" color="primary">Full Name</ion-title>
+                <ion-text>{{ user.contactPerson }}</ion-text>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full" color="light">
+              <ion-avatar>
+                <ion-icon name="phone-landscape-outline"></ion-icon>
+              </ion-avatar>
+              <ion-label class="d-flex ion-align-items-center ion-justify-content-between">
+                <ion-title class="ion-no-padding" color="primary">Phone</ion-title>
+                <ion-text>{{ user.contactPersonPhone }}</ion-text>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
