@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  api: 'http://192.168.0.168/api'
+  api: 'http://192.168.0.168/api',
+  PAYSTACK_KEY: 'pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be',
+  FLUTTERWAVE_KEY: 'FLWPUBK-de7f75b78072a2dc0817952b2617ab61-X',
+  FLUTTERWAVE_ENCRYPTION: '96d367dc7cc5928855f1150c',
+  FLUTTERWAVE_HASH: 'I_believe_in_HIM_4-Eva!',
 };
 
 /*

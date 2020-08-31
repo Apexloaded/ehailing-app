@@ -1,0 +1,44 @@
+import { Subsidiary } from './subsidiary';
+
+export interface PmtVehicles {
+    approvedBy: string;
+    approvedDate: Date;
+    assetWorthiness: string;
+    assignmentStatus: string;
+    pmtAssignments: [];
+    chasisNumber: string;
+    color: string;
+    createdAt: Date;
+    createdBy: string;
+    currentPartner: string;
+    custodian: string;
+    deleted: boolean;
+    dtoInitialDeposit: number;
+    dtoMaintenance: number;
+    dtoRepayment: number;
+    engineNumber: string;
+    expiryDate: Date;
+    id: string;
+    isActive: boolean;
+    isDto: boolean;
+    isDtoSettled: boolean;
+    isHealthy: boolean;
+    launchDate: Date;
+    lifespan: number;
+    name: string;
+    ownership: string;
+    plateNumber: string;
+    purchaseDate: Date;
+    purchaseValue: number;
+    ratings: [];
+    recordStatus: string;
+    registrationNumber: string;
+    seatingCapacity: number;
+    subsidiary: Subsidiary;
+    updatedAt: Date;
+    vehicleCategory: string;
+    vehicleClass: string;
+    vehicleLocation: string;
+    vehicleMake: string;
+    vehicleType: string;
+}

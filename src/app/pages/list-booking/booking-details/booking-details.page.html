@@ -1,0 +1,81 @@
+<ion-content *ngIf="!isLoading && error.isError">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="chevron-down-circle-outline"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <app-error
+          [icon]="error.icon"
+          [title]="error.title"
+          [msg]="error.message"
+          [redirectUrl]="'/list-booking'"
+  ></app-error>
+</ion-content>
+<ion-content class="ion-text-center" *ngIf="isLoading">
+  <ion-spinner color="primary" name="dots"></ion-spinner>
+</ion-content>
+<ion-content [fullscreen]="true" *ngIf="!isLoading && !error.isError">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-header class="ion-no-border" [translucent]="true">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-back-button color="primary" [defaultHref]="'/list-booking'"></ion-back-button>
+          </ion-buttons>
+          <h5 class="ion-text-right mr-3"
+          [class.success]="customerReservations.paymentStatus === 'SUCCESSFUL'"
+          [class.primary]="customerReservations.paymentStatus === 'PENDING'"
+          [class.danger]="customerReservations.paymentStatus === 'FAIL'"
+          >{{ paymentStatus }}</h5>
+        </ion-toolbar>
+        <div class="header-img">
+          <img src="../../../../assets/img/laptop_g.png">
+        </div>
+      </ion-header>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <div class="content mt-0">
+          <section>
+            <div class="info">
+              <p class="primary mb-1">{{ customerReservations.pmtRoute.name }}</p>
+              <p class="mb-3 mt-0">CODE: <span>{{ customerReservations.code }}</span></p>
+            </div>
+          </section>
+        </div>
+      </ion-col>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <ion-list class="ion-no-padding">
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Cost Payable</h6>
+              <h6 class="lbl-txt price">₦{{ customerReservations.amount }}</h6>
+            </div>
+          </ion-item>
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Payment Status</h6>
+              <h6 class="lbl-txt shipped">{{ customerReservations.paymentStatus }}</h6>
+            </div>
+          </ion-item>
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl" *ngIf="customerReservations.seatPositions.length > 1">Seat Postions</h6>
+              <h6 class="lbl" *ngIf="customerReservations.seatPositions.length === 1">Seat Postion</h6>
+              <h6 class="lbl-txt">{{ customerReservations.seatPositions }}</h6>
+            </div>
+          </ion-item>
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Boarding Date</h6>
+              <h6 class="lbl-txt">{{ customerReservations.createdAt | date }}</h6>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

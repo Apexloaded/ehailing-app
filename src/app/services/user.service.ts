@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginResponse, PmlRequest } from '../models';
+import { PmlRequest } from '../models';
 import { StorageService } from './storage.services';
 
 

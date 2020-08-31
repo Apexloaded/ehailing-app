@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-error',
@@ -9,9 +10,16 @@ export class ErrorComponent implements OnInit {
   @Input() icon: string;
   @Input() msg: string;
   @Input() title: string;
+  @Input() redirectUrl?: string;
 
-  constructor() { }
+  constructor(
+      private router: Router
+  ) { }
 
   ngOnInit() {}
+
+  redirect(url) {
+    this.router.navigateByUrl(`${url}`);
+  }
 
 }

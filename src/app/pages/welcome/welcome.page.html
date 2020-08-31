@@ -1,9 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>welcome</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+    <ion-grid class="ion-no-padding">
+        <ion-row>
+            <ion-col size="12" size-xl="6" offset-xl="3">
+                <div class="container">
+                    <section class="top">
+                        <div class="overlay">
+                            <img src="../../../assets/icon/logo-blue.png">
+                        </div>
+                    </section>
+                    <section class="bottom">
+                        <h3>Personalized Experience</h3>
+                        <p>Take control of your trip from the comfort of your house.</p>
+                        <ion-button shape="round" color="primary" [routerLink]="['/', 'login']">Login</ion-button>
+                        <p>Don't have an account? <span [routerLink]="['/', 'signup']">Sign Up</span></p>
+                    </section>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

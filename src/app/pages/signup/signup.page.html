@@ -1,9 +1,127 @@
-<ion-header>
+<ion-header class="ion-no-shadow ion-no-border">
   <ion-toolbar>
-    <ion-title>signup</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="returnBack(previousRoute, slider)">
+        <ion-icon name="chevron-back-outline" slot="icon-only" color="primary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen>
+  <ion-slides #slider [options]="sliderOpt" (ionSlideDrag)="onIonDrag(slider)" pager="false">
+    <ion-slide>
+      <form [formGroup]="slideOne">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" class="d-flex ion-justify-content-center ion-margin-bottom">
+              <ion-avatar>
+                <img src ="../../../assets/icon/logo-orange.png">
+              </ion-avatar>
+            </ion-col>
+            <ion-col size="12" class="ion-text-center">
+              <ion-title color="primary">Create An Account</ion-title>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-lg="6" offset-lg="3">
+              <div class="login-holder">
+                <ion-list>
+                  <ion-item lines="none">
+                    <ion-label position="stacked" color="primary">Email or Phone</ion-label>
+                    <ion-input formControlName="username" type="text" placeholder="Email or Phone Number"></ion-input>
+                  </ion-item>
+                  <ion-item lines="none">
+                    <ion-label position="stacked" color="primary">Password</ion-label>
+                    <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+                  </ion-item>
+                  <ion-item lines="none">
+                    <ion-label position="stacked" color="primary">Confirm Password</ion-label>
+                    <ion-input type="password" formControlName="c_password" placeholder="Confirm Password"></ion-input>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-lg="6" offset-lg="3">
+              <div class="login-holder ion-text-center">
+                <ion-button (click)="verifySlideOne(slider)" size="default" expand="full" shape="round" class="ion-margin-vertical">Proceed</ion-button>
+                <ion-label class="not-a-member">Already a member? <span [routerLink]="['/', 'login']"><strong>Login</strong></span></ion-label>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-slide>
+    <ion-slide>
+      <form [formGroup]="slideTwo">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" class="ion-text-center">
+              <ion-title color="primary">Profile Information</ion-title>
+              <small>All fields are required to finish registration.</small>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-lg="6" offset-lg="3">
+              <div class="login-holder">
+                <ion-list>
+                  <div class="input">
+                    <ion-label position="stacked" color="primary">Title</ion-label>
+                    <ion-radio-group formControlName="title" class="select">
+                      <div class="list">
+                        <ion-label color="medium">Mr</ion-label>
+                        <ion-radio slot="start" color="primary" value="Mr"></ion-radio>
+                      </div>
+                      <div class="list">
+                        <ion-label color="medium">Mrs</ion-label>
+                        <ion-radio slot="start" color="primary" value="Mrs"></ion-radio>
+                      </div>
+                    </ion-radio-group>
+                  </div>
 
+                  <ion-item lines="none">
+                    <ion-label position="stacked" color="primary">Surname</ion-label>
+                    <ion-input type="text" formControlName="surname" placeholder="Surname"></ion-input>
+                  </ion-item>
+                  <ion-item lines="none">
+                    <ion-label position="stacked" color="primary">Other Name</ion-label>
+                    <ion-input type="text" formControlName="otherName" placeholder="Other Name"></ion-input>
+                  </ion-item>
+                  <div class="input">
+                    <ion-label position="stacked" color="primary">Gender</ion-label>
+                    <ion-radio-group formControlName="gender" class="select">
+                      <div class="list">
+                        <ion-label color="medium">Male</ion-label>
+                        <ion-radio slot="start" color="primary" value="MALE"></ion-radio>
+                      </div>
+                      <div class="list">
+                        <ion-label color="medium">Female</ion-label>
+                        <ion-radio slot="start" color="primary" value="FEMALE"></ion-radio>
+                      </div>
+                    </ion-radio-group>
+                  </div>
+                  <ion-item lines="none">
+                    <ion-label position="stacked" color="primary">Country</ion-label>
+                    <ion-select formControlName="country" class="country">
+                      <ion-select-option>NG</ion-select-option>
+                      <ion-select-option>GH</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-lg="6" offset-lg="3">
+              <div class="login-holder ion-text-center">
+                <ion-button (click)="signUp()" size="default" expand="full" shape="round" class="ion-margin-vertical">Proceed</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

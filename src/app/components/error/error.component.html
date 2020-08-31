@@ -4,6 +4,7 @@
     <h3>{{ title }}</h3>
     <div class="divider"></div>
     <ion-note>{{ msg }}</ion-note>
+    <ion-button *ngIf="redirectUrl" (click)="redirect(redirectUrl)">Return Back</ion-button>
   </div>
 </div>
 

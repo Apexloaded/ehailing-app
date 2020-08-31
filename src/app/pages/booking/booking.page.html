@@ -1,49 +1,217 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button color="primary" [defaultHref]="previousRoute"></ion-back-button>
+      <ion-button (click)="returnBack(previousRoute, slider)">
+        <ion-icon name="chevron-back-outline" slot="icon-only" color="primary"></ion-icon>
+      </ion-button>
     </ion-buttons>
+    <ion-title color="primary" slot="end" class="ion-no-padding pr-3">Step {{ slideIndex }} of {{ slideLength }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!isLoading">
-  <form [formGroup]="bookForm">
-    <ion-grid class="ion-padding-horizontal py-0">
-      <ion-row>
-        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center">
-          <h4 class="primary mb-5">Reserve A Seat</h4>
-        </ion-col>
-        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
-          <ion-list class="ion-no-padding">
-            <ion-item color="light">
-              <ion-label position="stacked" color="primary">Terminal From</ion-label>
-              <ion-select formControlName="terminalFrom" (ionChange)="onSelectTerminalFrom($event)">
-                <ion-select-option *ngFor="let terminal of terminalFrom" value="{{ terminal.id }}">{{ terminal.name }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item color="light">
-              <ion-label position="stacked" color="primary">Terminal To</ion-label>
-              <ion-select formControlName="terminalTo">
-                <ion-select-option *ngFor="let terminal of terminalTo" value="{{ terminal.id }}">{{ terminal.name }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item color="light">
-              <ion-label position="stacked" color="primary">Departure Date</ion-label>
-              <ion-datetime
-                  display-format="DD MMM YYYY"
-                  picker-format="DD MMM YYYY"
-                  [min]="event.startDate"
-                  [max]="event.endDate"
-                  formControlName="departureDate"
-                  placeholder="27 Sep 2014"
-              ></ion-datetime>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding mt-4">
-          <ion-button shape="round" expand="full" size="normal" class="searchBtn" (click)="searchReservation()">SEARCH</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+<ion-content fullscreen class="ion-no-padding">
+  <ion-slides #slider [options]="sliderOpt" (ionSlideDrag)="onIonDrag(slider)" pager="false" class="mt-5" *ngIf="!isLoading">
+    <ion-slide>
+      <form [formGroup]="bookForm">
+        <ion-grid class="ion-padding-horizontal py-0">
+          <ion-row>
+            <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center mb-5 mt-5">
+              <h5 class="mb-1">Select Route</h5>
+              <div class="line mb-5"></div>
+            </ion-col>
+            <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+              <ion-list class="ion-no-padding">
+                <ion-item color="light">
+                  <ion-label position="stacked" color="primary">Terminal From</ion-label>
+                  <ion-select formControlName="terminalFrom" (ionChange)="onSelectTerminalFrom($event)">
+                    <ion-select-option *ngFor="let terminal of terminalFrom" value="{{ terminal.id }}">{{ terminal.name }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <ion-item color="light">
+                  <ion-label position="stacked" color="primary">Terminal To</ion-label>
+                  <ion-select formControlName="terminalTo">
+                    <ion-select-option *ngFor="let terminal of terminalTo" value="{{ terminal.id }}">{{ terminal.name }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <ion-item color="light">
+                  <ion-label position="stacked" color="primary">Departure Date</ion-label>
+                  <ion-datetime
+                    display-format="DD MMM YYYY"
+                    picker-format="DD MMM YYYY"
+                    [min]="event.startDate"
+                    [max]="event.endDate"
+                    formControlName="departureDate"
+                    placeholder="27 Sep 2014"
+                  ></ion-datetime>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+            <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding mt-4">
+              <ion-button shape="round" expand="full" size="normal" class="searchBtn" (click)="searchSchedule(slider)">SEARCH</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-slide>
+    <ion-slide>
+      <ion-grid class="ion-padding-horizontal py-0">
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center mb-5 mt-5">
+            <h5 class="mb-1">Select Schedule</h5>
+            <div class="line mb-5"></div>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+            <ion-list class="ion-no-padding">
+              <ion-item lines="none" *ngFor="let schedule of scheduleArr" button detail="" (click)="selectSchedule(schedule, slider)">
+                <ion-avatar slot="start">
+                  <img src="../../../assets/img/seat-blue.png">
+                </ion-avatar>
+                <ion-label class="d-flex ion-align-items-center ion-justify-content-between">
+                  <div>
+                    <h6 class="schedule-title"><ion-icon name="navigate-outline" color="primary" class="mr-1"></ion-icon>
+                      {{ schedule.pmtRoute.name }}</h6>
+                    <span class="pickedUp bold d-flex ion-align-items-center">{{ schedule.status }} <ion-icon name="person" class="ml-1" color="primary"></ion-icon>{{ schedule.pmtVehicle.seatingCapacity }}</span>
+                    <p class="booking-date">Date <ion-text>{{ schedule.boardingDate | date }}</ion-text></p>
+                  </div>
+                  <span class="amount">₦{{ schedule.fare }}</span>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-grid class="ion-padding-horizontal py-0">
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center mb-5 mt-5">
+            <h5 class="mb-1">Select Seat</h5>
+            <div class="line mb-5"></div>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+            <div class="car seat-{{seats.length}}">
+              <div class="seat disabled">D</div>
+              <div (click)="toggleSeats(i)" *ngFor="let seat of seats; let i = index"
+                   [class.disabled]="seat.disabled"
+                   [class.occupied]="seat.boarded"
+                   [class.selected]="seat.selected"
+                   class="seat"
+              >{{seat.label}}</div>
+            </div>
+            <div class="legend">
+              <span class="medium ion-text-uppercase">Empty</span>
+              <span class="success ion-text-uppercase">Selected</span>
+              <span class="danger ion-text-uppercase">Occupied</span>
+            </div>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding mt-1">
+            <ion-button shape="round" expand="full" size="normal" class="searchBtn" (click)="selectSeatsBtn(slider)">NEXT</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-grid class="ion-padding-horizontal py-0" *ngIf="schedule && reservationData">
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center mb-5 mt-5">
+            <h5 class="mb-1">Invoice Summary</h5>
+            <div class="line mb-5"></div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="d-flex ion-justify-content-between">
+            <div class="ion-text-left">
+              <small class="medium">Invoice Total</small>
+              <h3 class="mt-1">₦{{ reservationData.amount }}</h3>
+            </div>
+            <div class="ion-text-right">
+              <small class="medium">Invoice Date</small>
+              <h3 class="mt-1">12/20/2020</h3>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="user">
+          <ion-col size="12" size-xl="6" offset-xl="3">
+            <div class="ion-text-left mt-3 items">
+              <h6 class="dark">CUSTOMER PROFILE</h6>
+              <p class="mt-1 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Name</span> {{ user.otherName }} {{ user.surname }}</p>
+              <p class="mt-0 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Phone</span>  {{ user.phone }}</p>
+              <p class="mt-0 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Email</span> {{ user.email }}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3">
+            <div class="ion-text-left mt-3 items">
+              <h6 class="dark">ITEMS</h6>
+              <p class="mt-1 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Route</span> {{ schedule.pmtRoute.name }}</p>
+              <p class="mt-0 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Boarding Date</span>  {{ schedule.boardingDate | date }}</p>
+              <p class="mt-0 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Seat No</span> {{ reservationData.seatQuantity }}</p>
+              <p class="mt-0 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Individual Fare</span> ₦{{ schedule.fare }}</p>
+              <p class="mt-0 mb-1 d-flex ion-justify-content-between"><span class="mr-3">Total Fare</span> ₦{{ reservationData.amount }}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding mt-1">
+            <ion-button shape="round" expand="full" size="normal" class="searchBtn" (click)="slideNext(slider)">PROCEED</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+<!--      <app-payment-options-->
+<!--        [inpAmt]="reservationData.amount"-->
+<!--      ></app-payment-options>-->
+      <ion-grid class="ion-padding-horizontal py-0">
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center mb-5 mt-5">
+            <h5 class="mb-1">PAYMENT METHOD</h5>
+            <div class="line mb-5"></div>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let paymentMethod of paymentMethod">
+          <ion-col size="12" size-xl="6" offset-xl="3" class="d-flex ion-justify-content-between">
+            <ion-card
+              *ngIf="paymentMethod.name === 'PAYSTACK'"
+              angular4-paystack
+              [key]="'pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be'"
+              [paystackOptions]="options"
+              (paymentInit)="paymentInit()"
+              (close)="paymentCancel()"
+              (onClose)="paymentCancel()"
+              (callback)="paymentDone($event)"
+              class="ion-no-margin"
+              (click)="selectedPaymentMethod(paymentMethod)
+            ">
+              <ion-card-content class="py-0">
+                <ion-img [src]="paymentMethod.img"></ion-img>
+                <ion-icon [name]="paymentMethod.isClicked ? 'radio-button-on-outline' : 'radio-button-off-outline'" color="primary"></ion-icon>
+              </ion-card-content>
+            </ion-card>
+            <ion-card
+              *ngIf="paymentMethod.name === 'FLUTTERWAVE'"
+              class="ion-no-margin"
+              (click)="selectedPaymentMethod(paymentMethod)
+            ">
+              <ion-card-content class="py-0">
+                <ion-img [src]="paymentMethod.img"></ion-img>
+                <ion-icon [name]="paymentMethod.isClicked ? 'radio-button-on-outline' : 'radio-button-off-outline'" color="primary"></ion-icon>
+              </ion-card-content>
+            </ion-card>
+            <ion-card
+              *ngIf="paymentMethod.name === 'UNIONBANK'"
+              class="ion-no-margin"
+              (click)="selectedPaymentMethod(paymentMethod)
+            ">
+              <ion-card-content class="py-0">
+                <ion-img [src]="paymentMethod.img"></ion-img>
+                <ion-icon [name]="paymentMethod.isClicked ? 'radio-button-on-outline' : 'radio-button-off-outline'" color="primary"></ion-icon>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

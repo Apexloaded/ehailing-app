@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import {AlertController, ToastController} from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilitiesService {
   constructor(
-    private toast: ToastController
+    private toast: ToastController,
+    private alertCtrl: AlertController
   ) { }
 
   async presentToast(message, time) {
@@ -17,5 +18,33 @@ export class UtilitiesService {
       position: 'bottom'
     });
     toast.present();
+  }
+
+  async presentAlert(title, msg, func?, isRedirect?, url?) {
+    const alert = await this.alertCtrl.create({
+      header: `${title}`,
+      message: `${msg}`,
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  async presentRedirectAlert(title, msg, func?) {
+    const alert = await this.alertCtrl.create({
+      header: `${title}`,
+      message: `${msg}`,
+      buttons: [
+        {
+          text: 'Okay',
+          handler: func
+        }
+      ]
+    });
+    alert.present();
   }
 }

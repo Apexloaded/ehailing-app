@@ -47,12 +47,13 @@ ion-header {
     }
 
     ion-card {
-        --background: transparent;
+        --background: var(--ion-color-light);
         margin-bottom: 5%;
         width: 45%;
         min-height: 100px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         outline: none;
+        border-radius: 30px;
     
         ion-card-content:hover {
           cursor: pointer;
@@ -70,8 +71,8 @@ ion-header {
 
     img {
         margin: 5px 0;
-        height: 60px;
-        width: 60px;
+        height: 70px;
+        width: 70px;
         padding: .5rem;
         border-radius: 50%;
     }

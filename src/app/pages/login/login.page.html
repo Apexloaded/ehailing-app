@@ -1,9 +1,53 @@
-<ion-header>
+<ion-header class="ion-no-shadow ion-no-border">
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="returnBack(previousRoute)">
+        <ion-icon name="chevron-back-outline" slot="icon-only" color="primary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content fullscreen>
+  <form [formGroup]="loginForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="d-flex ion-justify-content-center ion-padding-vertical ion-margin-vertical">
+          <ion-avatar>
+            <img src ="../../../assets/icon/logo-orange.png">
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="12" class="ion-text-center">
+          <ion-title color="primary">Login To Account</ion-title>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-lg="6" offset-lg="3">
+          <div class="login-holder">
+            <ion-list>
+              <ion-item lines="none">
+                <ion-label position="stacked" color="primary">Email or Phone</ion-label>
+                <ion-input formControlName="username" type="text" placeholder="Email or Phone Number"></ion-input>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label position="stacked" color="primary">Password</ion-label>
+                <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+              </ion-item>
+            </ion-list>
+          </div>
+          <div class="login-holder ion-text-right">
+            <ion-label class="reset"><span [routerLink]="['/', 'reset-password']">Reset Password</span></ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-lg="6" offset-lg="3">
+          <div class="login-holder ion-text-center">
+            <ion-button (click)="login()" size="default" expand="full" shape="round" class="ion-margin-vertical">Login</ion-button>
+            <ion-label class="not-a-member">Not a member? <span [routerLink]="['/', 'signup']">Register</span></ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

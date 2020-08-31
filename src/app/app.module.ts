@@ -12,12 +12,17 @@ import { PreviousRouteService } from './services/previous-route.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './services/jwt.interceptor';
 import { AuthService, EnvService, ApiService, ErrorInterceptor } from './services';
-import {Terminals, States, Schedules} from './providers';
+import { Terminals, States, Schedules, PmtReservations } from './providers';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [
+      BrowserModule,
+      IonicModule.forRoot(),
+      AppRoutingModule,
+      HttpClientModule,
+  ],
   providers: [
     StatusBar,
     SplashScreen,
@@ -28,6 +33,7 @@ import {Terminals, States, Schedules} from './providers';
     EnvService,
     ApiService,
     States,
+    PmtReservations,
     Terminals,
     Schedules,
     PreviousRouteService
