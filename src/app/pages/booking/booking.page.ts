@@ -8,6 +8,8 @@ import {IonSlides, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services';
 import { PaystackOptions } from 'angular4-paystack';
+import { RaveOptions } from 'angular-rave';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-booking',
@@ -83,12 +85,13 @@ export class BookingPage implements OnInit, AfterViewInit {
     }
   ];
 
-  options: PaystackOptions = {
-    amount: null,
-    email: null,
-    currency: 'NGN',
-    ref: null
-  };
+  /********************** PAYSTACK PAYMENT OPTIONS START **************************/
+  options: PaystackOptions;
+  /********************** PAYSTACK PAYMENT OPTIONS ENDS ***************************/
+
+  /********************** FLUTTERWAVE PAYMENT OPTIONS START **************************/
+  raveOptions: RaveOptions;
+  /********************* FLUTTERWAVE PAYMENT OPTIONS ENDS ***************************/
 
   constructor(
     private prevRoute: PreviousRouteService,
@@ -109,12 +112,6 @@ export class BookingPage implements OnInit, AfterViewInit {
     this.buildForm();
     this.authService.getUser().then(user => {
       this.user = user;
-      /*********************SET SOME VALUE FOR PAYMENT REF OPTIONS STARTS************************/
-      this.options.metadata = {
-        name: `${this.user.otherName} ${this.user.surname}`,
-        phone: this.user.phone
-      };
-      /*********************SET SOME VALUE FOR PAYMENT REF OPTIONS ENDS**************************/
     });
   }
 
@@ -246,10 +243,6 @@ export class BookingPage implements OnInit, AfterViewInit {
         /************************SET SOME VALUE FOR RESERVATIONS ENDS****************************/
 
 
-        /*********************SET SOME VALUE FOR PAYMENT REF OPTIONS STARTS************************/
-        this.options.email = this.user.email;
-        /*********************SET SOME VALUE FOR PAYMENT REF OPTIONS ENDS**************************/
-
         this.loadingCtrl.create({
           spinner: 'dots'
         }).then(el => {
@@ -285,7 +278,6 @@ export class BookingPage implements OnInit, AfterViewInit {
    *************************************************@SlideTwo_Functions_Start****************************************************
    ******************************************************************************************************************************/
       selectSchedule(schedule: PmtSchedules, slider: IonSlides) {
-        console.log(schedule);
         this.reservations = schedule.pmtReservations;
         this.schedule = schedule;
         if (this.seats.length > 1) {
@@ -324,13 +316,9 @@ export class BookingPage implements OnInit, AfterViewInit {
         /************************SET SOME VALUE FOR RESERVATIONS STARTS****************************/
         this.reservationData.amount = this.bookForm.controls.seats.value ? (this.schedule.fare * this.bookForm.controls.seats.value.length) : null;
         this.reservationData.seatQuantity = this.bookForm.controls.seats.value ? this.bookForm.controls.seats.value.length : null;
+        this.options = this.payStackOptions(this.user);
+        this.raveOptions = this.flutterWaveOptions(this.user);
         /************************SET SOME VALUE FOR RESERVATIONS ENDS****************************/
-
-
-        /*********************SET SOME VALUE FOR PAYMENT REF OPTIONS STARTS************************/
-        this.options.amount = this.reservationData.amount * 100;
-        this.options.ref = `${this.schedule.code}-${this.reservationData.seatQuantity}-${Math.ceil(Math.random() * 10e10)}`;
-        /*********************SET SOME VALUE FOR PAYMENT REF OPTIONS ENDS**************************/
       }
 
       generateSeats() {
@@ -392,6 +380,34 @@ export class BookingPage implements OnInit, AfterViewInit {
    * * * * * * * * * * * * * * * * * * * * Payment Method Selection and Payment Processing * * * * * * * * * * * * * * * * * * *
    *************************************************@SlideFive_Functions_Start**************************************************
    *****************************************************************************************************************************/
+      cancelPaymentOption() {
+        this.slider.slideTo(0);
+        this.slideIndex = 1;
+        this.bookForm.reset();
+        this.reservationData = {
+          amount: null,
+          trxref: null,
+          customer: null,
+          pmtTerminalFrom: null,
+          pmtSchedule: null,
+          pmtRoute: null,
+          seatQuantity: null,
+          seatPositions: null,
+          paymentMethod: null,
+          paymentGateway: null,
+          description: null,
+          gateway: {
+            currency: null
+          }
+        };
+        this.schedule = null;
+        this.paymentMethod.map(res => {
+          res.isClicked = false;
+        });
+        this.router.navigate(['/', 'book']);
+        console.log('cancelled');
+      }
+
       selectedPaymentMethod(pay: any) {
         this.paymentMethod.map(res => {
           res.isClicked = false;
@@ -401,42 +417,106 @@ export class BookingPage implements OnInit, AfterViewInit {
             this.reservationData.paymentGateway = pay.name;
             this.reservationData.paymentMethod = PAYMENT_METHOD.GATEWAY;
             this.reservationData.gateway.currency = this.options.currency;
-            console.log(this.reservationData);
             /************************SET SOME VALUE FOR RESERVATIONS ENDS****************************/
+            this.utilitiesService.presentToast('Payment Processing...', 4000);
           }
         });
       }
 
-      paymentInit() {
-        console.log('Payment initialized');
-        console.log(this.options);
-      }
+      /***********************************************************************************************
+      ****************************************PAYSTACK START******************************************
+      ***********************************************************************************************/
+          payStackOptions(user): PaystackOptions {
+            return {
+              ref: `${this.schedule.code}-${this.reservationData.seatQuantity}-${Math.ceil(Math.random() * 10e10)}`,
+              email: user.email,
+              amount: this.reservationData.amount * 100,
+              currency: 'NGN',
+              metadata: {
+                name: user.surname + ' ' + user.otherName,
+                phone: user.phone,
+              },
+            };
+          }
 
-      paymentDone(ref: {
-        message: string;
-        reference: string;
-        status: string;
-        trans: string;
-        transaction: string;
-        trxref: string;
-      }) {
-        switch (ref.status) {
-          case 'success':
-            this.reservationData.trxref = ref.reference;
-            this.createReservation();
-            break;
-          case 'pending':
-            this.reservationData.trxref = ref.reference;
-            this.createReservation();
-            break;
-          default:
-        }
-      }
+          payStackInit() {}
 
-      paymentCancel() {
-        console.log('cancelled');
-        console.log('payment failed');
-      }
+          payStackDone(ref: {
+            message: string;
+            reference: string;
+            status: string;
+            trans: string;
+            transaction: string;
+            trxref: string;
+          }) {
+            switch (ref.status) {
+              case 'success':
+                this.reservationData.trxref = ref.reference;
+                this.createReservation();
+                break;
+              case 'pending':
+                this.reservationData.trxref = ref.reference;
+                this.createReservation();
+                break;
+              default:
+            }
+          }
+
+          payStackCancel() {
+            this.cancelPaymentOption();
+          }
+      /***********************************************************************************************
+       ****************************************PAYSTACK END*******************************************
+       ***********************************************************************************************/
+
+
+      /***********************************************************************************************
+       ****************************************FLUTTERWAVE START******************************************
+       ***********************************************************************************************/
+          flutterWaveOptions(user): RaveOptions {
+            return {
+              PBFPubKey: environment.FLUTTERWAVE_PUBLIC_KEY,
+              customer_email: user.email,
+              customer_firstname: user.otherName,
+              customer_lastname: user.surname,
+              custom_description: 'Payment for goods',
+              amount: this.reservationData.amount,
+              customer_phone: user.phone,
+              txref: `${this.schedule.code}-${this.reservationData.seatQuantity}-${Math.ceil(Math.random() * 10e10)}\``,
+              currency: 'NGN'
+            };
+          }
+
+          flutterWaveInit() {}
+
+          flutterWaveSuccess(ref: {
+            message: string;
+            reference: string;
+            status: string;
+            trans: string;
+            transaction: string;
+            trxref: string;
+          }) {
+            switch (ref.status) {
+              case 'success':
+                this.reservationData.trxref = ref.reference;
+                this.createReservation();
+                break;
+              case 'pending':
+                this.reservationData.trxref = ref.reference;
+                this.createReservation();
+                break;
+              default:
+            }
+          }
+
+          flutterWaveFailure() {
+            this.cancelPaymentOption();
+          }
+      /***********************************************************************************************
+       **************************************FLUTTERWAVE END******************************************
+       ***********************************************************************************************/
+
   /*****************************************************************************************************************************
    * * * * * * * * * * * * * * * * * * * * Payment Method Selection and Payment Processing * * * * * * * * * * * * * * * * * * *
    *************************************************@SlideFive_Functions_Ends***************************************************

@@ -4,11 +4,14 @@
 
 export const environment = {
   production: false,
-  api: 'http://192.168.0.168/api',
+  // api: 'http://192.168.0.168/api',
+  api: 'http://172.16.17.188/api',
+  PMT_SUPPORT_EMAIL: 'contact@pmt.ng',
+  API_KEY: 'PEACE-e6db11d1f8a6208de8cb-Z',
   PAYSTACK_KEY: 'pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be',
-  FLUTTERWAVE_KEY: 'FLWPUBK-de7f75b78072a2dc0817952b2617ab61-X',
-  FLUTTERWAVE_ENCRYPTION: '96d367dc7cc5928855f1150c',
-  FLUTTERWAVE_HASH: 'I_believe_in_HIM_4-Eva!',
+  FLUTTERWAVE_PUBLIC_KEY: 'FLWPUBK_TEST-0d6991be7e23edefb730d387a8cac8e1-X',
+  FLUTTERWAVE_SECRET_KEY: 'FLWSECK_TEST-38ab688233acef4b0e05897fa2a7232e-X',
+  FLUTTERWAVE_ENCRYPTION: 'FLWSECK_TEST0f01c34a9d58'
 };
 
 /*

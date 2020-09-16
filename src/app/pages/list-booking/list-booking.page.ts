@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {PmtReservations} from '../../providers';
 import {Customer, Reservations} from '../../models';
 import {AuthService} from '../../services';
+import {PreviousRouteService} from "../../services/previous-route.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-booking',
@@ -12,6 +14,7 @@ export class ListBookingPage implements OnInit {
   public customerReservations: Array<Reservations>;
   public user: Customer;
   public isLoading: boolean;
+  public previousRoute: string;
 
   public error = {
     isError: null,
@@ -22,7 +25,9 @@ export class ListBookingPage implements OnInit {
 
   constructor(
       private pmtReservations: PmtReservations,
-      private authService: AuthService
+      private authService: AuthService,
+      private prevRoute: PreviousRouteService,
+      private router: Router
   ) {
     this.authService.getUser().then(res => {
       this.user = res;
@@ -32,6 +37,16 @@ export class ListBookingPage implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
+  }
+
+  ionViewWillEnter() {
+    this.previousRoute = this.prevRoute.getPreviousRoute;
+    if (this.previousRoute !== null &&
+        !this.previousRoute.includes('/list-booking')
+    ) {
+      return;
+    }
+    this.previousRoute = '/home';
   }
 
   getReservation(customer: Customer) {
@@ -64,6 +79,10 @@ export class ListBookingPage implements OnInit {
       this.getReservation(this.user);
       ev.target.complete();
     }, 2000);
+  }
+
+  returnBack(url) {
+    this.router.navigateByUrl(`${url}`);
   }
 
 }

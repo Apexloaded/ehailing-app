@@ -2,11 +2,8 @@ import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError, map, retry, tap} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
 import {cleanObject} from '../helpers';
-
-
-const API_STORAGE_KEY = 'specialkey';
+import {EnvService} from './env.service';
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -16,11 +13,14 @@ const httpOptions = {
     providedIn: 'root'
 })
 export class ApiService {
-    private apiUrl = environment.api;
+    private apiUrl: string;
 
     constructor(
         private http: HttpClient,
-    ) { }
+        private envService: EnvService
+    ) {
+        this.apiUrl = envService.api;
+    }
 
     getApi(url: string): Observable<any> {
         const apiUrl = `${this.apiUrl}/${url}`;

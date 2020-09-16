@@ -1,0 +1,49 @@
+<div *ngIf="!isLoading && unread.length < 1 && !error.isError">
+  <ion-col size="12" size-xl="6" offset-xl="3">
+    <div class="empty-holder">
+      <ion-card>
+        <ion-card-content class="ion-text-center">
+          <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
+          <h3>Empty Request</h3>
+          <ion-note>You have not made any pickup request yet. click the blue button below to make one</ion-note>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-col>
+</div>
+<div class="error" *ngIf="error.isError && !isLoading">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="chevron-down-circle-outline"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <app-error
+    [icon]="error.icon"
+    [title]="error.title"
+    [msg]="error.message"
+  ></app-error>
+</div>
+<div *ngIf="isLoading" class="w-100 ion-text-center">
+  <ion-spinner color="primary" name="dots"></ion-spinner>
+</div>
+<div *ngIf="!isLoading && unread.length > 0 && !error.isError">
+  <ion-col size="12" size-xl="6" offset-xl="3" class="ion-float-left">
+    <ion-list class="ion-no-padding">
+      <ion-item lines="none" *ngFor="let unread of unread" button [routerLink]="['/','messages',unread.id]" class="py-2" [class.unread]="unread.receiveStatus === 'UNREAD'">
+        <div class="name-holder d-flex ion-justify-content-center ion-align-items-center">
+          <h4 class="light ion-text-uppercase">{{ unread.senderEmail | slice : 0:1 }}</h4>
+        </div>
+        <ion-label class="d-flex ion-align-items-center ion-justify-content-between">
+          <div>
+            <h3>{{ unread.subject }}</h3>
+            <span class="ion-text-wrap">{{ unread.body | slice : 0:99 }}</span>
+          </div>
+          <span class="time">{{ unread.createdAt | date : 'MM:hh a' }}</span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</div>

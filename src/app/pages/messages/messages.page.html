@@ -1,0 +1,84 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-xl="6" offset-xl="3">
+          <div class="empty-holder">
+            <ion-card>
+              <ion-card-content class="px-0 py-0">
+                <ion-header class="ion-no-border">
+                  <ion-toolbar>
+                    <ion-buttons slot="start">
+                      <ion-back-button [defaultHref]="'/home'"></ion-back-button>
+                    </ion-buttons>
+                    <ion-title class="ion-no-padding"><span>Inbox</span></ion-title>
+                    <ion-buttons slot="end">
+                      <ion-menu-button menu="msg-menu"></ion-menu-button>
+                    </ion-buttons>
+                  </ion-toolbar>
+                </ion-header>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      class="primary"
+      refreshingSpinner="dots">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="customerMail.length < 1 && !error.isError && !isLoading">
+        <div class="empty-holder">
+          <ion-card>
+            <ion-card-content class="ion-text-center">
+              <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
+              <h3>Empty Request</h3>
+              <ion-note>You have not received any email yet.</ion-note>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </ion-col>
+      <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="customerMail.length > 0 && !error.isError && !isLoading">
+        <ion-list class="ion-no-padding">
+          <ion-item lines="none" *ngFor="let mail of customerMail" button detail="" [routerLink]="['/','messages',mail.id]" [class.unread]="mail.receiveStatus === 'UNREAD'" class="py-2">
+            <div class="name-holder d-flex ion-justify-content-center ion-align-items-center">
+              <h4 class="light ion-text-uppercase">{{ mail.senderEmail | slice : 0:1 }}</h4>
+            </div>
+            <ion-label class="d-flex ion-align-items-center ion-justify-content-between">
+              <div>
+                <h3>{{ mail.subject }}</h3>
+                <span class="ion-text-wrap">{{ mail.body | slice : 0:99 }}</span>
+              </div>
+              <span class="time">{{ mail.createdAt | date : 'MM:hh a' }}</span>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center" *ngIf="isLoading">
+        <ion-spinner color="primary" name="dots"></ion-spinner>
+      </ion-col>
+      <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="!isLoading && error.isError">
+        <app-error
+          [icon]="error.icon"
+          [title]="error.title"
+          [msg]="error.message"
+        ></app-error>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<!-- fab placed to the bottom start -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="createMsg()">
+  <ion-fab-button>
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

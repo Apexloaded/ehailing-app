@@ -4,7 +4,9 @@
       <ion-col size="12" size-xl="6" offset-xl="3">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-back-button [defaultHref]="'/home'"></ion-back-button>
+            <ion-button (click)="returnBack(previousRoute)">
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </ion-button>
           </ion-buttons>
           <ion-title class="ion-no-padding">Travel History</ion-title>
         </ion-toolbar>

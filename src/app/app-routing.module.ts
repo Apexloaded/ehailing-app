@@ -21,7 +21,16 @@ const routes: Routes = [
   {
     path: 'profile',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+      },
+      {
+        path: 'edit',
+        loadChildren: () => import('./pages/profile/edit/edit.module').then( m => m.EditPageModule)
+      }
+    ]
   },
   {
     path: 'signup',
@@ -52,6 +61,23 @@ const routes: Routes = [
         loadChildren: () => import('./pages/list-booking/booking-details/booking-details.module').then( m => m.BookingDetailsPageModule)
       }
     ]
+  },
+  {
+    path: 'messages',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./pages/messages/messages.module').then( m => m.MessagesPageModule)
+      },
+      {
+        path: ':id',
+        loadChildren: () => import('./pages/messages/details/details.module').then( m => m.DetailsPageModule)
+      }
+    ]
+  },
+  {
+    path: 'tickets',
+    loadChildren: () => import('./pages/tickets/tickets.module').then( m => m.TicketsPageModule)
   }
 ];
 @NgModule({

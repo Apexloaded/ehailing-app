@@ -1,0 +1,50 @@
+<div *ngIf="!isLoading && outbox.length < 1 && !error.isError">
+  <ion-col size="12" size-xl="6" offset-xl="3">
+    <div class="empty-holder">
+      <ion-card>
+        <ion-card-content class="ion-text-center">
+          <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
+          <h3>Empty Request</h3>
+          <ion-note>You have not made any pickup request yet. click the blue button below to make one</ion-note>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-col>
+</div>
+<div class="error" *ngIf="error.isError && !isLoading">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="chevron-down-circle-outline"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <app-error
+    [icon]="error.icon"
+    [title]="error.title"
+    [msg]="error.message"
+  ></app-error>
+</div>
+<div *ngIf="isLoading" class="w-100 ion-text-center">
+  <ion-spinner color="primary" name="dots"></ion-spinner>
+</div>
+<div *ngIf="!isLoading && outbox.length > 0 && !error.isError">
+  <ion-col size="12" size-xl="6" offset-xl="3">
+    <ion-list class="ion-no-padding">
+      <ion-item lines="none" *ngFor="let outbox of outbox" button [routerLink]="['/','messages',outbox.id]" class="py-2">
+        <div class="name-holder d-flex ion-justify-content-center ion-align-items-center">
+          <h4 class="light ion-text-uppercase">{{ outbox.senderEmail | slice: 0:1 }}</h4>
+        </div>
+        <ion-label class="d-flex ion-justify-content-start flex-column">
+          <div class="d-flex ion-justify-content-between subject-time mb-1">
+            <h3>To: {{ outbox.recipient }}</h3>
+            <span class="time">{{ outbox.createdAt | date : 'hh:mm a' }}</span>
+          </div>
+          <h3>{{ outbox.subject }}</h3>
+          <span class="ion-text-wrap">{{ outbox.body | slice: 0:100}}<i *ngIf="outbox.body.length > 99">...</i></span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</div>

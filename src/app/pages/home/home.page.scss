@@ -33,6 +33,11 @@ ion-header {
     .greeting {
         padding:0 20px;
     }
+
+    .name {
+      font-size: 20px;
+      color: var(--ion-color-light);
+    }
 }
 
 .content {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiResponse, Reservations} from '../models';
-import {ApiService, AuthService} from '../services';
+import { ApiService, AuthService } from '../services';
 import { map } from 'rxjs/operators';
 
 @Injectable()

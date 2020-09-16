@@ -143,9 +143,10 @@ export class AuthService {
   }
 
   async retrieveCustomer(id) {
-    const url = `erp/customers?_id${id}`;
+    const url = `erp/customers?_id=${id}`;
     const user = this.apiService.getApi(url).pipe(
         map((res: ApiResponse) => {
+          console.log(res);
           if (res.success) {
             return res.payload;
           }

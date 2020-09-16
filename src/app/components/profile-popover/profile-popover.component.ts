@@ -27,6 +27,6 @@ export class ProfilePopoverComponent implements OnInit {
 
   editProfile() {
     this.popoverCtrl.dismiss();
-    this.router.navigateByUrl('/edit-profile');
+    this.router.navigateByUrl('/profile/edit');
   }
 }

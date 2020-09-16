@@ -11,8 +11,17 @@ import { AppComponent } from './app.component';
 import { PreviousRouteService } from './services/previous-route.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './services/jwt.interceptor';
-import { AuthService, EnvService, ApiService, ErrorInterceptor } from './services';
-import { Terminals, States, Schedules, PmtReservations } from './providers';
+import {
+  AuthService,
+  EnvService,
+  ApiService,
+  ErrorInterceptor,
+  SupportService,
+  TicketsService,
+  UserService, UtilitiesService, StorageService
+} from './services';
+import {Terminals, States, Schedules, PmtReservations, PmtMail, PmtTickets} from './providers';
+import {PmlRouting} from "./models";
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,10 +41,17 @@ import { Terminals, States, Schedules, PmtReservations } from './providers';
     AuthService,
     EnvService,
     ApiService,
+    SupportService,
+    TicketsService,
+    UserService,
+    UtilitiesService,
+    StorageService,
     States,
     PmtReservations,
+    PmtMail,
     Terminals,
     Schedules,
+    PmtTickets,
     PreviousRouteService
   ],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf="!isLoading">
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col size="12" size-xl="6" offset-xl="3">
@@ -10,8 +10,8 @@
             </div>
             <div class="greeting">
               <div class="card">
-                <h2 class="ion-no-padding">Welcome <span class="name"><strong>Joel</strong></span></h2>
-                <p>Happy to have you</p>
+                <h2 class="ion-no-padding light mt-2">Welcome</h2>
+                <p class="mt-1 name"><span class="name"><strong>{{ user.otherName }}  {{ user.surname }}</strong></span></p>
               </div>
             </div>
           </ion-toolbar>
@@ -39,14 +39,14 @@
               </ion-card-content>
             </ion-card>
 
-            <ion-card class="ion-no-margin" button>
+            <ion-card class="ion-no-margin" button [routerLink]="['/', 'messages']">
               <ion-card-content class="ion-padding-horizontal">
                 <img src ="../../../assets/icon/msg.png">
                 <h4>Messages</h4>
               </ion-card-content>
             </ion-card>
 
-            <ion-card class="ion-no-margin" button>
+            <ion-card class="ion-no-margin" button [routerLink]="['/','tickets']">
               <ion-card-content class="ion-padding-horizontal">
                 <img src ="../../../assets/icon/tickets.png">
                 <h4>Tickets</h4>

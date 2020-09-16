@@ -177,10 +177,9 @@
               angular4-paystack
               [key]="'pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be'"
               [paystackOptions]="options"
-              (paymentInit)="paymentInit()"
-              (close)="paymentCancel()"
-              (onClose)="paymentCancel()"
-              (callback)="paymentDone($event)"
+              (paymentInit)="payStackInit()"
+              (onClose)="payStackCancel()"
+              (callback)="payStackDone($event)"
               class="ion-no-margin"
               (click)="selectedPaymentMethod(paymentMethod)
             ">
@@ -191,6 +190,11 @@
             </ion-card>
             <ion-card
               *ngIf="paymentMethod.name === 'FLUTTERWAVE'"
+              angular-rave
+              [raveOptions]="raveOptions"
+              (callback)="flutterWaveSuccess($event)"
+              (onclose)="flutterWaveFailure()"
+              (init)="flutterWaveInit()"
               class="ion-no-margin"
               (click)="selectedPaymentMethod(paymentMethod)
             ">

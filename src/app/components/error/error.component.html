@@ -1,10 +1,12 @@
 <div class="container ion-justify-content-center ion-align-items-center">
-  <div class="content">
+  <div class="content ion-justify-content-center">
     <ion-icon [name]="icon" color="primary"></ion-icon>
     <h3>{{ title }}</h3>
     <div class="divider"></div>
     <ion-note>{{ msg }}</ion-note>
-    <ion-button *ngIf="redirectUrl" (click)="redirect(redirectUrl)">Return Back</ion-button>
+    <div>
+      <ion-button *ngIf="redirectUrl" (click)="redirect(redirectUrl)">Return Back</ion-button>
+    </div>
   </div>
 </div>
 

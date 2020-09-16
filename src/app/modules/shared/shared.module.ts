@@ -4,13 +4,15 @@ import { IonicModule } from '@ionic/angular';
 import { PaymentOptionsComponent } from '../../components/payment-options/payment-options.component';
 import { Angular4PaystackModule } from 'angular4-paystack';
 import {ErrorComponent} from "../../components/error/error.component";
+import {ProfilePopoverComponent} from "../../components/profile-popover/profile-popover.component";
 
 
 
 @NgModule({
   declarations: [
       ErrorComponent,
-      PaymentOptionsComponent
+      PaymentOptionsComponent,
+      ProfilePopoverComponent
   ],
   imports: [
     Angular4PaystackModule.forRoot('pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be'),
@@ -19,7 +21,8 @@ import {ErrorComponent} from "../../components/error/error.component";
   ],
   exports: [
       ErrorComponent,
-      PaymentOptionsComponent
+      PaymentOptionsComponent,
+      ProfilePopoverComponent
   ]
 })
 export class SharedModule { }

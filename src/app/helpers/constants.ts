@@ -1,5 +1,5 @@
 export const ID = {
-    EMENE_TERMINAL: "5c51bc91860d8b5bc0000001",
+    EMENE_TERMINAL: '5c51bc91860d8b5bc0000001',
 }
 
 export const PMT = {
@@ -306,26 +306,31 @@ export const ISSUE_PRIORITY = {
 };
 
 export const VOUCHER_STAGES = [
-    { step: 1, state: "RAISED",         action: "RAISE",             officer: "STAFF",              description: "Create a document"                           },
-    { step: 2, state: "ACKNOWLEDGED",   action: "ACKNOWLEDGEMENT",   officer: "HOD",                description: "Acknowledges the request"                    },
-    { step: 3, state: "ENDORSED",       action: "ENDORSEMENT",       officer: "Internal Audit",     description: "Endorse if it asses compliance test"         },
-    { step: 4, state: "AUTHORIZED",     action: "AUTHORIZATION",     officer: "Finance HOD",        description: "Approves if the expense is within budget"    },
-    { step: 5, state: "APPROVED",       action: "APPROVAL",          officer: "Director",           description: "Need assessment, beauraucratic compliance"   },
-    { step: 6, state: "CHECKED",        action: "CHECKING",          officer: "Chairman",           description: "Chairman signs the final approval"           },
-    { step: 7, state: "PAID",           action: "PAYMENT",           officer: "CASHIER",            description: "Payment by cash, cheque, transfer"           },
-    { step: 8, state: "AUDITED",        action: "AUDITING",          officer: "Internal Audit",     description: "Final Evaluation to close the record"        },
-    { step: 9, state: "CLOSED",         action: "CLOSING",           officer: "External Audit",     description: "External Auditor closes the record"          },
+    { step: 1, state: 'RAISED',         action: 'RAISE',             officer: 'STAFF',              description: 'Create a document'                           },
+    { step: 2, state: 'ACKNOWLEDGED',   action: 'ACKNOWLEDGEMENT',   officer: 'HOD',                description: 'Acknowledges the request'                    },
+    { step: 3, state: 'ENDORSED',       action: 'ENDORSEMENT',       officer: 'Internal Audit',     description: 'Endorse if it asses compliance test'         },
+    { step: 4, state: 'AUTHORIZED',     action: 'AUTHORIZATION',     officer: 'Finance HOD',        description: 'Approves if the expense is within budget'    },
+    { step: 5, state: 'APPROVED',       action: 'APPROVAL',          officer: 'Director',           description: 'Need assessment, beauraucratic compliance'   },
+    { step: 6, state: 'CHECKED',        action: 'CHECKING',          officer: 'Chairman',           description: 'Chairman signs the final approval'           },
+    { step: 7, state: 'PAID',           action: 'PAYMENT',           officer: 'CASHIER',            description: 'Payment by cash, cheque, transfer'           },
+    { step: 8, state: 'AUDITED',        action: 'AUDITING',          officer: 'Internal Audit',     description: 'Final Evaluation to close the record'        },
+    { step: 9, state: 'CLOSED',         action: 'CLOSING',           officer: 'External Audit',     description: 'External Auditor closes the record'          },
 ];
 
 export const MAINTENANCE_STAGES = [
-    { step: 1, state: "REGISTERED",     action: "REGISTER",     officer: "Partner",                 description: "Create a maintenance record"                           },
-    { step: 2, state: "CHECKED",        action: "CHECK",        officer: "HOD",                     description: "Needs assessment for maintenance"                    },
-    { step: 3, state: "ASSIGNED",       action: "ASSIGN",       officer: "Maintenance Manager",     description: "Assign the vehicle to a team"         },
-    { step: 4, state: "SPARES",         action: "REQUEST",      officer: "Maintenance Team Lead",   description: "Raise a request for spare parts"    },
-    { step: 5, state: "CONTROL",        action: "APPROVE",      officer: "Quality Control",         description: "Approve Spare Request"   },
-    { step: 6, state: "ISSUANCE",       action: "ISSUE",        officer: "Spares",                  description: "Issues part to Parner with DTO Maintenance T&C"           },
-    { step: 7, state: "TEST",           action: "TEST",         officer: "Partner",                 description: "Partner test Vehicle and confirm"           },
-    { step: 7, state: "FINALIZE",       action: "FINALIZE",     officer: "Tracking manager",        description: "Partner reports to tracking manager"           },
-    { step: 8, state: "AUDITED",        action: "AUDITING",     officer: "Internal Audit",          description: "Final Evaluation to close the record"        },
-    { step: 9, state: "CLOSED",         action: "CLOSING",      officer: "External Audit",          description: "External Auditor closes the record"          },
+    { step: 1, state: 'REGISTERED',     action: 'REGISTER',     officer: 'Partner',                 description: 'Create a maintenance record'                           },
+    { step: 2, state: 'CHECKED',        action: 'CHECK',        officer: 'HOD',                     description: 'Needs assessment for maintenance'                    },
+    { step: 3, state: 'ASSIGNED',       action: 'ASSIGN',       officer: 'Maintenance Manager',     description: 'Assign the vehicle to a team'         },
+    { step: 4, state: 'SPARES',         action: 'REQUEST',      officer: 'Maintenance Team Lead',   description: 'Raise a request for spare parts'    },
+    { step: 5, state: 'CONTROL',        action: 'APPROVE',      officer: 'Quality Control',         description: 'Approve Spare Request'   },
+    { step: 6, state: 'ISSUANCE',       action: 'ISSUE',        officer: 'Spares',                  description: 'Issues part to Parner with DTO Maintenance T&C'           },
+    { step: 7, state: 'TEST',           action: 'TEST',         officer: 'Partner',                 description: 'Partner test Vehicle and confirm'           },
+    { step: 7, state: 'FINALIZE',       action: 'FINALIZE',     officer: 'Tracking manager',        description: 'Partner reports to tracking manager'           },
+    { step: 8, state: 'AUDITED',        action: 'AUDITING',     officer: 'Internal Audit',          description: 'Final Evaluation to close the record'        },
+    { step: 9, state: 'CLOSED',         action: 'CLOSING',      officer: 'External Audit',          description: 'External Auditor closes the record'          },
 ];
+
+export const COMPLAINANT = ['STAFF', 'PARTNER', 'CUSTOMER', 'SUPPLIER'];
+export const PRIORITY = ['LOW', 'NORMAL', 'HIGH'];
+export const STATUS = ['OPEN', 'CLOSED', 'PENDING'];
+export const TYPE = ['BILLING', 'PMT', 'PML', 'ERP', 'TECHNICAL'];

@@ -1,0 +1,96 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="previousRoute"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+        <div class="header">
+          <img src="../../../../assets/img/edit-profile.png">
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3" class="ion-no-padding">
+        <ion-title class="bold title">SETTINGS</ion-title>
+        <div class="line"></div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="!isLoading">
+        <ion-list>
+          <ion-item color="light" detail="" lines="none" button (click)="editName()">
+            <ion-avatar>
+              <ion-icon name="reader-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Name</ion-title>
+              <ion-text color="dark">{{ user.otherName | titlecase }} {{ user.surname | titlecase }}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item color="light" detail="" lines="none" button (click)="editEmail()">
+            <ion-avatar>
+              <ion-icon name="mail-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Email</ion-title>
+              <ion-text color="dark" *ngIf="user.email">{{ user.email | lowercase }}</ion-text>
+              <ion-text color="dark" *ngIf="!user.email">None</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item color="light" detail="" lines="none" button (click)="mobilePhone()">
+            <ion-avatar>
+              <ion-icon name="phone-portrait-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Mobile Number</ion-title>
+              <ion-text color="dark">{{ user.phone }}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item color="light" detail="" lines="none" button (click)="homePhone()">
+            <ion-avatar>
+              <ion-icon name="home-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Land Line</ion-title>
+              <ion-text color="dark" *ngIf="user.phoneHome">{{ user.phoneHome }}</ion-text>
+              <ion-text color="dark" *ngIf="!user.phoneHome">None</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item color="light" lines="none" button>
+            <ion-avatar>
+              <ion-icon name="planet-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Country</ion-title>
+              <ion-text color="dark">{{ user.country }}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item color="light" detail="" lines="none" button (click)="contactPerson()">
+            <ion-avatar>
+              <ion-icon name="person-circle-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Contact Person</ion-title>
+              <ion-text color="dark">{{ user.contactPerson }}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item color="light" detail="" lines="none" button (click)="resetPassword()">
+            <ion-avatar>
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-padding-horizontal">
+              <ion-title class="ion-no-padding bold" color="primary">Reset Password</ion-title>
+              <ion-text color="dark">&bull;&bull;&bull;&bull;&bull;&bull;</ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
