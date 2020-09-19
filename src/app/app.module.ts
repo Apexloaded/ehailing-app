@@ -18,10 +18,9 @@ import {
   ErrorInterceptor,
   SupportService,
   TicketsService,
-  UserService, UtilitiesService, StorageService
+  UtilitiesService, StorageService, LocationService
 } from './services';
 import {Terminals, States, Schedules, PmtReservations, PmtMail, PmtTickets} from './providers';
-import {PmlRouting} from "./models";
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,7 +42,6 @@ import {PmlRouting} from "./models";
     ApiService,
     SupportService,
     TicketsService,
-    UserService,
     UtilitiesService,
     StorageService,
     States,
@@ -52,6 +50,7 @@ import {PmlRouting} from "./models";
     Terminals,
     Schedules,
     PmtTickets,
+    LocationService,
     PreviousRouteService
   ],
   bootstrap: [AppComponent]

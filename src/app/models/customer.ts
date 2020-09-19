@@ -1,6 +1,4 @@
-﻿
-import { PmlShipment } from './pml-shipment';
-import { Terminal } from './terminal';
+﻿import { Terminal } from './terminal';
 
 export class Customer {
     id: string;
@@ -36,7 +34,6 @@ export class Customer {
     isStaff: boolean;
     wallet: number;
     terminal: Terminal;
-    pmlShipments: PmlShipment[];
     isPhoneVerified: boolean;
     isEmailVerified: boolean;
     updatedAt?: Date;
@@ -93,7 +90,6 @@ export interface Customer {
     isStaff: boolean;
     wallet: number;
     terminal: Terminal;
-    pmlShipments: PmlShipment[];
     isPhoneVerified: boolean;
     isEmailVerified: boolean;
     updatedAt?: Date;

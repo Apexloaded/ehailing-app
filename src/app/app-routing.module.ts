@@ -78,6 +78,10 @@ const routes: Routes = [
   {
     path: 'tickets',
     loadChildren: () => import('./pages/tickets/tickets.module').then( m => m.TicketsPageModule)
+  },
+  {
+    path: 'pickup',
+    loadChildren: () => import('./pages/pickup/pickup.module').then( m => m.PickupPageModule)
   }
 ];
 @NgModule({

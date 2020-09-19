@@ -1,6 +1,14 @@
 ion-header {
   border-bottom: 1px solid #eeeeee !important;
 }
+ion-card-header {
+  border-bottom: 1px solid var(--ion-color-medium);
+}
+.priority {
+  text-align: left;
+  padding: 0 5px;
+  font-size: 12px;
+}
 .status-holder {
   border-top:1px solid #eeeeee;
   float: left;
@@ -14,18 +22,22 @@ ion-header {
   min-width: 90px;
 }
 
-.solved {
-  background-color: var(--ion-color-success);
+.high {
+  background-color: var(--ion-color-primary);
 }
 
-.pending {
-  background-color: var(--ion-color-secondary);
+.normal {
+  background-color: var(--ion-color-medium);
 }
 
-.closed {
+.low {
   background-color: var(--ion-color-dark);
 }
 
 .new {
   background-color: var(--ion-color-primary);
+}
+
+.icon {
+  font-size: 50px !important;
 }

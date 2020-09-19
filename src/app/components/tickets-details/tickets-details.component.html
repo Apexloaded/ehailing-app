@@ -1,0 +1,54 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-no-margin">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding">Code {{ ticket.code }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row class="stick py-1">
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <div class="d-flex ion-justify-content-between">
+          <p class="ion-no-margin px-3 light"
+             [class.high]="ticket.priority === 'HIGH'"
+             [class.low]="ticket.priority === 'LOW'"
+             [class.normal]="ticket.priority === 'NORMAL'"
+          >High</p>
+          <p class="ion-no-margin px-3"
+           [class.secondary]="ticket.status === 'PENDING'"
+           [class.primary]="ticket.status === 'OPEN'"
+           [class.dark]="ticket.status === 'CLOSED'"
+          >OPEN</p>
+          <p class="ion-no-margin px-3 ion-text-uppercase"
+            [class.secondary]="ticket.officerReply"
+            [class.dark]="!ticket.officerReply"
+          >{{ hasReplied }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <div *ngIf="ticket">
+          <ion-card *ngFor="let msg of ticket.messages.slice().reverse()">
+            <ion-card-content>
+              <h2 *ngIf="msg.recipient === 'STAFF'">Sender: <span class="primary">Me</span></h2>
+              <h2 *ngIf="msg.recipient === 'CUSTOMER'">Sender: <span class="secondary">Staff</span></h2>
+              <p>{{ msg.body }}</p>
+              <span>{{ msg.createdAt | date: 'MMM dd y | hh:mm a' }}</span>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<!-- fab placed to the bottom start -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="replyTicket(ticket)">
+  <ion-fab-button>
+    <ion-icon class="reply" name="paper-plane-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

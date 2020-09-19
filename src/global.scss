@@ -206,7 +206,17 @@ ion-toolbar {
 
 .primary {color: var(--ion-color-primary)}
 .danger { color: var(--ion-color-danger)}
+.secondary { color: var(--ion-color-secondary)}
 .success { color: var(--ion-color-success)}
 .medium { color: var(--ion-color-medium)}
 .dark { color: var(--ion-color-dark)}
 .light { color: var(--ion-color-light) !important}
+
+.reply-modal {
+    border-top-right-radius: 5%;
+    border-top-left-radius: 5%;
+    box-shadow: 10px 10px 100px 5px var(--ion-color-primary);
+    height: 60%;
+    position: absolute;
+    top: 40%;
+}

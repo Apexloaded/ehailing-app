@@ -53,7 +53,7 @@ export class PmtTickets {
     }
 
     async recordUpdate(tickets, payload): Promise<ApiResponse> {
-        const url = `erp/tickets/${tickets.id}`;
+        const url = `erp/tickets/reply/${tickets._id}`;
         const proRes = this.apiService.updateApi(url, payload).pipe(
             map((res: ApiResponse) => {
                 if (res.success && res.payload) {

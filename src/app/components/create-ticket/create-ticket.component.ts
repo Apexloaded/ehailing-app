@@ -70,6 +70,7 @@ export class CreateTicketComponent implements OnInit {
       subject: this.ticketForm.controls.subject.value,
       complaint: this.ticketForm.controls.complaint.value,
       priority: this.ticketForm.controls.priority.value,
+      userEmail: user.email
     };
 
     this.loadingCtrl.create({

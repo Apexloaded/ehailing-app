@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {CreateTicketComponent} from '../../components/create-ticket/create-ticket.component';
 import {Tickets} from '../../models/pmt-tickets';
-import {Customer} from "../../models";
-import {StorageService, TicketsService} from "../../services";
+import {Customer} from '../../models';
+import {StorageService, TicketsService} from '../../services';
+import {TicketsDetailsComponent} from '../../components/tickets-details/tickets-details.component';
 
 @Component({
   selector: 'app-tickets',
@@ -11,9 +12,10 @@ import {StorageService, TicketsService} from "../../services";
   styleUrls: ['./tickets.page.scss'],
 })
 export class TicketsPage implements OnInit {
-  public tickets: Tickets;
+  public tickets: Tickets[];
   public isLoading: boolean;
   public user: Customer;
+  public idSample = '5f6350cdc3c2aa20181ded9b';
 
   public error = {
     isError: null,
@@ -34,7 +36,6 @@ export class TicketsPage implements OnInit {
   }
 
   IonViewWillEnter() {
-    console.log(this.user);
     this.getTickets(this.user);
   }
 
@@ -45,8 +46,9 @@ export class TicketsPage implements OnInit {
     //   this.customerMail = inboxArray;
     //   return;
     // }
-    this.ticketsService.getTickets(`?customer=${customer.id}&sort=-createdAt`).then(res => {
+    this.ticketsService.getTickets(`?customer=${customer.id}&sort=-createdAt&populate=messages`).then(res => {
       if (res.success) {
+        console.log(res.payload);
         this.isLoading = false;
         this.tickets = res.payload;
         return;
@@ -63,6 +65,22 @@ export class TicketsPage implements OnInit {
   createTicket() {
     this.modalCtrl.create({
       component: CreateTicketComponent
+    }).then(el => {
+      el.present();
+    });
+  }
+
+  doRefresh(ev) {
+    setTimeout(() => {
+      this.getTickets(this.user);
+      ev.target.complete();
+    }, 2000);
+  }
+
+  showDetails(ticket: Tickets) {
+    this.modalCtrl.create({
+      component: TicketsDetailsComponent,
+      componentProps: ticket
     }).then(el => {
       el.present();
     });

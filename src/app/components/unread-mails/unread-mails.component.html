@@ -5,7 +5,7 @@
         <ion-card-content class="ion-text-center">
           <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
           <h3>Empty Request</h3>
-          <ion-note>You have not made any pickup request yet. click the blue button below to make one</ion-note>
+          <ion-note>You have not made any unread email.</ion-note>
         </ion-card-content>
       </ion-card>
     </div>
@@ -14,10 +14,10 @@
 <div class="error" *ngIf="error.isError && !isLoading">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
-            pullingIcon="chevron-down-circle-outline"
-            pullingText="Pull to refresh"
-            refreshingSpinner="circles"
-            refreshingText="Refreshing...">
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
   <app-error

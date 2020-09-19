@@ -53,9 +53,7 @@ export class AppComponent implements OnInit{
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private menuCtrl: MenuController,
-    private authService: AuthService,
-    private alertCtrl: AlertController,
-    private prevRoute: PreviousRouteService
+    private authService: AuthService
   ) {
     this.initializeApp();
     this.isAuthenticate();

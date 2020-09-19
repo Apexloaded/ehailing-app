@@ -22,4 +22,8 @@ export class TicketsService {
     createTicket(data) {
         return this.ticketsProvider.recordCreate(data);
     }
+
+    replyTicket(ticket, payload) {
+        return this.ticketsProvider.recordUpdate(ticket, payload);
+    }
 }

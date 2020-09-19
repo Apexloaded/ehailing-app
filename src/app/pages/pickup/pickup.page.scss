@@ -1,0 +1,44 @@
+.header {
+  background-color: var(--ion-color-primary);
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  .header-title-holder {
+    background-color: var(--ion-color-primary);
+    display: flex;
+    position: sticky;
+    top: 0;
+  }
+}
+.header-img {
+  display: flex;
+  justify-content: center;
+  background-color: var(--ion-color-light);
+  min-height: 50px;
+
+  img {
+    width: 210px;
+    height: 210px;
+  }
+}
+
+h2 {
+  color: var(--ion-color-primary);
+  text-align: center;
+  font-weight: bold;
+  font-family: Arial;
+  margin-top: 6px;
+}
+
+ion-list {
+  background-color: var(--ion-color-light);
+}
+
+ion-item {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 5px;
+  margin-bottom: 2em;
+}
+
+ion-button {
+  height: 45px;
+}

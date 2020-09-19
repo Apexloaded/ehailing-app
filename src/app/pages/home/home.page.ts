@@ -8,8 +8,40 @@ import {AuthService} from "../../services";
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  private user: Customer;
-  private isLoading: boolean;
+  public user: Customer;
+  public isLoading: boolean;
+  public appMenus = [
+    {
+      name: 'Booking',
+      route: 'book',
+      icon: 'book-a-seat.png'
+    },
+    {
+      name: 'History',
+      route: 'list-booking',
+      icon: 'travel-history.png'
+    },
+    {
+      name: 'Pickup',
+      route: 'pickup',
+      icon: 'pick-me-up.png'
+    },
+    {
+      name: 'Message',
+      route: 'messages',
+      icon: 'msg.png'
+    },
+    {
+      name: 'Ticket',
+      route: 'tickets',
+      icon: 'tickets.png'
+    },
+    {
+      name: 'Profile',
+      route: 'profile',
+      icon: 'profile.png'
+    }
+  ];
 
   constructor(
       private authService: AuthService

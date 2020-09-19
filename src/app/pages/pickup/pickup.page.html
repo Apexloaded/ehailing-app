@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" class="ion-no-margin">
+      <ion-button>
+        <ion-back-button color="light" [defaultHref]="'/home'"></ion-back-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding light">Pickup</ion-title>
+  </ion-toolbar>
+  <ion-segment [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="0">
+      <ion-label>REQUEST</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>HISTORY</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content *ngIf="!isLoading && error.isError">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <app-error
+    [icon]="error.icon"
+    [title]="error.title"
+    [msg]="error.message"
+    [redirectUrl]="'/list-booking'"
+  ></app-error>
+</ion-content>
+<ion-content class="ion-text-center" *ngIf="isLoading">
+  <ion-spinner color="primary" name="dots"></ion-spinner>
+</ion-content>
+<ion-content [fullscreen]="true" *ngIf="!isLoading && !error.isError">
+  <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slidesChange(slides)" (ionSlidesDidLoad)="slidesChange(slides)">
+    <ion-slide>
+      <ion-grid class="ion-no-padding">
+        <ion-row class="ion-padding-horizontal">
+          <ion-col size="12" size-xl="6" offset-xl="3">
+            <ion-list class="ion-no-padding">
+              <ion-item color="light" lines="none">
+                <ion-label position="floating" color="primary">Pickup Date</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+              <ion-item color="light" lines="none">
+                <ion-label position="floating" color="primary">Other Name</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+              <ion-item color="light" lines="none">
+                <ion-label position="floating" color="primary">Other Name</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3">
+            <ion-button shape="round" expand="full" size="large" (click)="updateBtn()">UPDATE</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      TEst
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+<!--<ion-content [fullscreen]="true" *ngIf="!isLoading && !error.isError">-->
+<!--  <ion-grid class="ion-no-padding">-->
+<!--    <ion-row>-->
+<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
+<!--        <div class="header">-->
+<!--          <div class="header-title-holder">-->
+<!--            <ion-back-button color="light" [defaultHref]="'/home'"></ion-back-button>-->
+<!--            <ion-title class="ion-no-padding light">Pickup</ion-title>-->
+<!--          </div>-->
+<!--          <div class="header-img">-->
+<!--            <ion-segment (ionChange)="segmentChanged($event)">-->
+<!--              <ion-segment-button value="request">-->
+<!--                <ion-label class="primary">Request</ion-label>-->
+<!--              </ion-segment-button>-->
+<!--              <ion-segment-button value="history">-->
+<!--                <ion-label class="primary">History</ion-label>-->
+<!--              </ion-segment-button>-->
+<!--            </ion-segment>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </ion-col>-->
+<!--    </ion-row>-->
+<!--    <ion-row class="ion-padding-horizontal">-->
+<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
+<!--        <h2 color="primary" class="my-3">Pickup Form</h2>-->
+<!--      </ion-col>-->
+<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
+<!--        <ion-list class="ion-no-padding">-->
+<!--          <ion-item color="light" lines="none">-->
+<!--            <ion-label position="floating" color="primary">Pickup Date</ion-label>-->
+<!--            <ion-input type="text"></ion-input>-->
+<!--          </ion-item>-->
+<!--          <ion-item color="light" lines="none">-->
+<!--            <ion-label position="floating" color="primary">Other Name</ion-label>-->
+<!--            <ion-input type="text"></ion-input>-->
+<!--          </ion-item>-->
+<!--          <ion-item color="light" lines="none">-->
+<!--            <ion-label position="floating" color="primary">Other Name</ion-label>-->
+<!--            <ion-input type="text"></ion-input>-->
+<!--          </ion-item>-->
+<!--        </ion-list>-->
+<!--      </ion-col>-->
+<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
+<!--        <ion-button shape="round" expand="full" size="large" (click)="updateBtn()">UPDATE</ion-button>-->
+<!--      </ion-col>-->
+<!--    </ion-row>-->
+<!--  </ion-grid>-->
+<!--</ion-content>-->
