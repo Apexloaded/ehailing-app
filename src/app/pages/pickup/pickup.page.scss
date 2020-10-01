@@ -9,6 +9,15 @@
     top: 0;
   }
 }
+
+.icon {
+  font-size: 50px !important;;
+}
+
+.header-segment {
+  background-color: var(--ion-color-light);
+}
+
 .header-img {
   display: flex;
   justify-content: center;
@@ -33,12 +42,33 @@ ion-list {
   background-color: var(--ion-color-light);
 }
 
+.pickup {
+  ion-item {
+    border: 1px solid var(--ion-color-dark);
+  }
+}
+
 ion-item {
   border: 1px solid var(--ion-color-primary);
   border-radius: 5px;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 ion-button {
-  height: 45px;
+  height: 50px;
+}
+
+.pick-btn-holder {
+  flex-direction: column;
+}
+
+.pick-location-btn {
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  flex-direction: column;
+  background-color: var(--ion-color-primary);
+  ion-icon {
+    font-size: 60px;
+  }
 }

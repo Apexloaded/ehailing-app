@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding light">Hire A Bus</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
+        <div class="mt-4">
+          <div class="hire-a-bus" [routerLink]="['/','hire-bus','hire']">
+            <img src="../../../assets/img/hire.png">
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
+        <div class="d-flex mt-5 mb-3 ion-justify-content-between">
+          <h6>Recent Order</h6>
+          <h6 class="d-flex ion-align-items-center primary">list all <ion-icon color="primary" name="chevron-forward-outline"></ion-icon></h6>
+        </div>
+
+        <div class="item-holder">
+          <div class="item-empty ion-text-center">
+            <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
+            <h3 class="primary">Empty Request</h3>
+            <ion-note>You have not made any order yet.</ion-note>
+          </div>
+        </div>
+
+        <div class="item-holder mb-4" [routerLink]="['/','hire-bus',9087656789]">
+          <div class="item-hire">
+            <div class="hire-icon">
+              <img src="../../../assets/img/bg.jpg">
+            </div>
+            <div class="hire-content px-3">
+              <div>
+                <h5>Destination Name</h5>
+                <h4 class="mt-1 primary">₦55,000</h4>
+              </div>
+              <ion-icon name="navigate-circle-outline" color="primary"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

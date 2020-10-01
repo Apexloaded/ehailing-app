@@ -27,6 +27,9 @@ form, ion-grid {
     display: block;
     border-radius: 50px;
 }
+
+.w-100 {width: 100%}
+
 .schedule-title {
     display: flex;
     align-items: center;
@@ -38,33 +41,42 @@ ion-list {
     ion-item {
         margin:0 0 10px 0 !important;
         --background: transparent !important;
+    }
+}
 
-        img {
-            height: 100%;
+.pmt-class {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 1rem;
+
+    ion-avatar {
+        height: 50px;
+    }
+
+    .pmt-details {
+        width: 100%;
+
+        h6 { font-size: 14px}
+        .status {
+            font-size: 12px;
         }
 
-        ion-label {
-            margin: 0px;
+        .booking-date {
+            float: left;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--ion-color-medium);
+            margin: 0;
+        }
 
-            h3 { margin: 0px}
-
-            .booking-date {
-                float: left;
-                font-weight: 700;
-                font-size: 13px;
-                color: var(--ion-color-medium);
-            }
-
-            .amount {
-                border-radius: 5px;
-                font-weight: bold;
-                min-width: 60px !important;
-                float: left;
-                text-align: right;
-                font-size: 12px;
-                color: var(--ion-color-primary);
-            }
-
+        .amount {
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 60px !important;
+            float: left;
+            text-align: right;
+            font-size: 12px;
+            color: var(--ion-color-primary);
         }
     }
 }
@@ -137,35 +149,35 @@ ion-list {
     padding-bottom: 10px;
 }
 
-ion-card {
-    width: 100%;
-    padding: 1em 0;
-}
-
-ion-card-content{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    h3{
-        text-align: left;
-        line-height: 1.5;
-    }
-
-    ion-label{
-        text-align: left !important;
-    }
-
-    ion-button{
-        margin: 3em 2.2em 3em 2.2em;
-        font-weight: 700;
-        color: #fff;
-        min-height: 45px !important;
-        width: 50px;
-    }
-
-    ion-img {
-        height: 40px;
-        width: 100px;
-    }
-}
+//ion-card {
+//    width: 100%;
+//    padding: 1em 0;
+//}
+//
+//ion-card-content{
+//    display: flex;
+//    justify-content: space-between;
+//    align-items: center;
+//    width: 100%;
+//    h3{
+//        text-align: left;
+//        line-height: 1.5;
+//    }
+//
+//    ion-label{
+//        text-align: left !important;
+//    }
+//
+//    ion-button{
+//        margin: 3em 2.2em 3em 2.2em;
+//        font-weight: 700;
+//        color: #fff;
+//        min-height: 45px !important;
+//        width: 50px;
+//    }
+//
+//    ion-img {
+//        height: 40px;
+//        width: 100px;
+//    }
+//}

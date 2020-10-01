@@ -41,7 +41,7 @@
         <div class="content mt-0">
           <section>
             <div class="info">
-              <p class="primary mb-1">{{ customerReservations.pmtRoute.name }}</p>
+              <p class="primary mb-1 d-flex ion-align-items-center">{{ customerReservations.pmtRoute.name.split('=>')[0] }}<ion-icon name="return-up-forward-outline" class="mx-1"></ion-icon>{{ customerReservations.pmtRoute.name.split('=>')[1] }}</p>
               <p class="mb-3 mt-0">CODE: <span>{{ customerReservations.code }}</span></p>
             </div>
           </section>

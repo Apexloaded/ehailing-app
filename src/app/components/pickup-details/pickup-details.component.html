@@ -1,0 +1,86 @@
+<ion-content class="ion-text-center" *ngIf="isLoading">
+  <ion-spinner color="primary" name="dots"></ion-spinner>
+</ion-content>
+<ion-content [fullscreen]="true" *ngIf="!isLoading">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-header class="ion-no-border" [translucent]="true">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="close()">
+              <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <span class="ion-text-right mr-3 ion-float-end px-2 light"
+              [class.pickedup]="pickup.pickupStatus === 'PICKEDUP'"
+              [class.delivered]="pickup.pickupStatus === 'DELIVERED'"
+              [class.pending]="pickup.pickupStatus === 'PENDING'"
+              [class.dispatched]="pickup.pickupStatus === 'DISPATCHED'"
+              [class.cancel]="pickup.pickupStatus === 'CANCEL'"
+              [class.declined]="pickup.pickupStatus === 'DECLINED'"
+          >{{ pickup.pickupStatus }}</span>
+        </ion-toolbar>
+        <div class="header-img">
+          <img src="../../../../assets/img/house.png">
+        </div>
+      </ion-header>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <div class="content mt-0">
+          <section>
+            <div class="info">
+              <p class="primary mb-1 d-flex ion-align-items-center">{{ pickup.address }}</p>
+              <div class="d-flex ion-justify-content-between btn">
+                <ion-button shape="round" (click)="cancelPickup(pickup)" color="danger" *ngIf="pickup.pickupStatus === 'PENDING'">Cancel</ion-button>
+                <ion-button shape="round" (click)="sendPickup(pickup)" *ngIf="pickup.pickupStatus === 'PENDING' || pickup.pickupStatus === 'DISPATCHED'">Picked Up</ion-button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </ion-col>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <ion-list class="ion-no-padding">
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Pickup Date</h6>
+              <h6 class="lbl-txt">{{ pickup.createdAt | date }}</h6>
+            </div>
+          </ion-item>
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Pickup Code</h6>
+              <h6 class="lbl-txt price">{{ pickup.code }}</h6>
+            </div>
+          </ion-item>
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Amount</h6>
+              <h6 class="lbl-txt price">₦{{ pickup.amount }}</h6>
+            </div>
+          </ion-item>
+          <ion-item color="light" lines="full">
+            <div class="details-extra">
+              <h6 class="lbl">Payment Status</h6>
+              <h6 class="lbl-txt shipped">{{ pickup.paymentStatus }}</h6>
+            </div>
+          </ion-item>
+<!--          <ion-item color="light" lines="full">-->
+<!--            <div class="details-extra">-->
+<!--              <h6 class="lbl" *ngIf="customerReservations.seatPositions.length > 1">Seat Postions</h6>-->
+<!--              <h6 class="lbl" *ngIf="customerReservations.seatPositions.length === 1">Seat Postion</h6>-->
+<!--              <h6 class="lbl-txt">{{ customerReservations.seatPositions }}</h6>-->
+<!--            </div>-->
+<!--          </ion-item>-->
+<!--          <ion-item color="light" lines="full">-->
+<!--            <div class="details-extra">-->
+<!--              <h6 class="lbl">Boarding Date</h6>-->
+<!--              <h6 class="lbl-txt">{{ customerReservations.createdAt | date }}</h6>-->
+<!--            </div>-->
+<!--          </ion-item>-->
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

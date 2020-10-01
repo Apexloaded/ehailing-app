@@ -1,0 +1,16 @@
+.from-to-form {
+  background-color: #eee;
+  padding: .2em;
+  border-radius: 10px;
+
+  ion-item {
+    --background: transparent;
+    ion-label {
+      font-size: 16px !important;
+    }
+  }
+  .divider {
+    background-color: #4e4e4e;
+    height: 0.1px;
+  }
+}

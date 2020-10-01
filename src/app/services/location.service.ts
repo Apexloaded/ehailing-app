@@ -8,6 +8,10 @@ import { Coordinates } from '../models';
 })
 export class LocationService {
   private watchId: string;
+  private latLng = {
+    lat: null,
+    lng: null
+  };
   private geoPoints = new BehaviorSubject<Coordinates>(null);
   constructor(
       private geolocation: Geolocation
@@ -15,15 +19,15 @@ export class LocationService {
     this.getCurrentPosition();
   }
 
-  getCoords() {
+  get getCoords() {
     return this.geoPoints;
   }
 
   private getCurrentPosition() {
     this.geolocation.getCurrentPosition().then((res) => {
-      console.log(res);
-      // resp.coords.latitude
-      // resp.coords.longitude
+      this.latLng.lat = res.coords.latitude;
+      this.latLng.lng = res.coords.longitude;
+      this.geoPoints.next(this.latLng);
     }).catch((error) => {
       console.log('Error getting location', error);
     });

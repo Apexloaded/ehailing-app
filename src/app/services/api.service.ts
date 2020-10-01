@@ -33,7 +33,6 @@ export class ApiService {
         const apiUrl = `${this.apiUrl}/${url}`;
         const payload = cleanObject(data);
         return this.http.post(apiUrl, payload, httpOptions).pipe(
-            retry(3),
             catchError(this.handleError)
         );
     }

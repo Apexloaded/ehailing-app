@@ -204,12 +204,12 @@ ion-toolbar {
 .px-4 { padding-left: 20px; padding-right: 20px}
 .px-5 { padding-left: 25px; padding-right: 25px}
 
-.primary {color: var(--ion-color-primary)}
-.danger { color: var(--ion-color-danger)}
-.secondary { color: var(--ion-color-secondary)}
-.success { color: var(--ion-color-success)}
-.medium { color: var(--ion-color-medium)}
-.dark { color: var(--ion-color-dark)}
+.primary {color: var(--ion-color-primary) !important}
+.danger { color: var(--ion-color-danger) !important}
+.secondary { color: var(--ion-color-secondary) !important}
+.success { color: var(--ion-color-success) !important}
+.medium { color: var(--ion-color-medium) !important}
+.dark { color: var(--ion-color-dark) !important}
 .light { color: var(--ion-color-light) !important}
 
 .reply-modal {
@@ -219,4 +219,24 @@ ion-toolbar {
     height: 60%;
     position: absolute;
     top: 40%;
+}
+
+.pickedup {
+    background-color: var(--ion-color-primary);
+}
+
+.delivered {
+    background-color: var(--ion-color-success);
+}
+
+.dispatched {
+    background-color: var(--ion-color-medium);
+}
+
+.pending {
+    background-color: var(--ion-color-secondary);
+}
+
+.cancel, .declined {
+    background-color: var(--ion-color-dark);
 }

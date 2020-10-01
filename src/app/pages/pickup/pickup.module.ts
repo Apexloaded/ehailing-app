@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PickupPageRoutingModule } from './pickup-routing.module';
 import { PickupPage } from './pickup.page';
+import { SharedModule } from '../../modules/shared/shared.module';
+import { PickupDetailsComponent } from '../../components/pickup-details/pickup-details.component';
 
 @NgModule({
   imports: [
@@ -11,8 +13,9 @@ import { PickupPage } from './pickup.page';
     ReactiveFormsModule,
     FormsModule,
     IonicModule,
-    PickupPageRoutingModule
+    PickupPageRoutingModule,
+    SharedModule
   ],
-  declarations: [PickupPage]
+  declarations: [PickupPage, PickupDetailsComponent]
 })
 export class PickupPageModule {}

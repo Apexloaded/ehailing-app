@@ -21,7 +21,7 @@
             <ion-card *ngFor="let menu of appMenus" class="ion-no-margin" button [routerLink]="['/', menu.route]">
               <ion-card-content class="ion-padding-horizontal">
                 <img src ="../../../assets/icon/{{menu.icon}}">
-                <h4>{{ menu.name }}</h4>
+                <h4 class="medium">{{ menu.name }}</h4>
               </ion-card-content>
             </ion-card>
           </div>

@@ -20,7 +20,8 @@ import {
   TicketsService,
   UtilitiesService, StorageService, LocationService
 } from './services';
-import {Terminals, States, Schedules, PmtReservations, PmtMail, PmtTickets} from './providers';
+import {Terminals, States, Schedules, PmtReservations, PmtMail, PmtTickets, PmtPickups} from './providers';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -50,8 +51,10 @@ import {Terminals, States, Schedules, PmtReservations, PmtMail, PmtTickets} from
     Terminals,
     Schedules,
     PmtTickets,
+    PmtPickups,
     LocationService,
-    PreviousRouteService
+    PreviousRouteService,
+    Geolocation
   ],
   bootstrap: [AppComponent]
 })

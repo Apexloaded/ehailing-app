@@ -33,14 +33,14 @@ export class PmtTickets {
     }
 
     async recordRetrieve(queryString = ''): Promise<ApiResponse> {
-        const url = `erp/tickets${queryString}`;
+        const url = `crm/tickets${queryString}`;
         const proRes = this.apiService.getApi(url).pipe(
             map((res: ApiResponse) => res));
         return await proRes.toPromise();
     }
 
     async recordCreate(record, queryString = ''): Promise<ApiResponse> {
-        const url = `erp/tickets${queryString}`;
+        const url = `crm/tickets${queryString}`;
         const proRes = this.apiService.postApi(url, record).pipe(
             map((res: ApiResponse) => {
                 if (res.success && res.payload) {
@@ -53,7 +53,7 @@ export class PmtTickets {
     }
 
     async recordUpdate(tickets, payload): Promise<ApiResponse> {
-        const url = `erp/tickets/reply/${tickets._id}`;
+        const url = `crm/tickets/reply/${tickets._id}`;
         const proRes = this.apiService.updateApi(url, payload).pipe(
             map((res: ApiResponse) => {
                 if (res.success && res.payload) {

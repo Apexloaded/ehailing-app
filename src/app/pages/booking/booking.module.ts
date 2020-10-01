@@ -15,12 +15,7 @@ import {AngularRaveModule} from 'angular-rave';
     ReactiveFormsModule,
     IonicModule,
     BookingPageRoutingModule,
-    SharedModule,
-    Angular4PaystackModule.forRoot('pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be'),
-    AngularRaveModule.forRoot({
-      key: 'FLWPUBK_TEST-0d6991be7e23edefb730d387a8cac8e1-X',
-      isTest: true
-    })
+    SharedModule
   ],
   declarations: [BookingPage]
 })

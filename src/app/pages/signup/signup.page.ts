@@ -58,6 +58,7 @@ export class SignupPage implements OnInit {
 
   slideOneForm() {
     this.slideOne = this.formBuilder.group({
+      accountType: new FormControl(),
       username: new FormControl('', [
         Validators.required,
         Validators.minLength(8), Validators.maxLength(100)
@@ -93,6 +94,7 @@ export class SignupPage implements OnInit {
       this.utilitiesService.presentToast('Password mismatch', 3000);
       return;
     }
+    this.slideOne.controls.accountType.setValue('REGULAR');
     this.slideNext(slider);
   }
 
@@ -103,7 +105,7 @@ export class SignupPage implements OnInit {
     }
 
     const data: any = {
-      customerType: 'INDIVIDUAL',
+      customerType: this.slideOne.controls.accountType.value,
       title: this.slideTwo.controls.title.value,
       surname: this.slideTwo.controls.surname.value,
       otherName: this.slideTwo.controls.otherName.value,
@@ -121,7 +123,26 @@ export class SignupPage implements OnInit {
       data.phone = this.slideOne.controls.username.value;
     }
 
-    console.log(data);
+    this.loadingCtrl.create({
+      spinner: 'dots',
+    }).then(el => {
+      el.present();
+      this.authService.creatCustomer(data)
+          .subscribe(
+              res => {
+                el.dismiss();
+                this.slideOne.reset();
+                this.slideTwo.reset();
+              },
+              err => {
+                el.dismiss();
+                if (err === `Error creating Customer record. Error creating Customer record. Customer duplicate phone ${data.phone} found.`) {
+                  err = 'User already registered!';
+                }
+                this.utilitiesService.presentToast(err, 4000);
+              }
+          );
+    });
 
   }
 

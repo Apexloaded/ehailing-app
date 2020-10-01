@@ -22,6 +22,11 @@ export class HomePage implements OnInit {
       icon: 'travel-history.png'
     },
     {
+      name: 'Hire',
+      route: 'hire-bus',
+      icon: 'hire-bus.png'
+    },
+    {
       name: 'Pickup',
       route: 'pickup',
       icon: 'pick-me-up.png'

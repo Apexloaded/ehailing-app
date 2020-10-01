@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PAYMENT_GATEWAY} from '../../models';
+import {PAYMENT_GATEWAY, PAYMENT_METHOD} from '../../models';
 import {PaystackOptions} from 'angular4-paystack';
+import {ModalController, NavParams} from '@ionic/angular';
+import {RaveOptions} from "angular-rave";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-payment-options',
@@ -8,57 +11,86 @@ import {PaystackOptions} from 'angular4-paystack';
   styleUrls: ['./payment-options.component.scss'],
 })
 export class PaymentOptionsComponent implements OnInit {
-  @Input() inpAmt: number;
+  public inputData;
 
-  public payStack = {
-    id: '1',
-    name: PAYMENT_GATEWAY.PAYSTACK,
-    img: '../../../assets/img/paystack.jpg',
-    isClicked: false,
-  };
-  public flutterWave = {
-      id: '2',
-      name: PAYMENT_GATEWAY.FLUTTERWAVE,
-      img: '../../../assets/img/flutter-wave.jpg',
-      isClicked: false,
-  };
-  public unionBank = {
-    id: '3',
-    name: PAYMENT_GATEWAY.UNIONBANK,
-    img: '../../../assets/img/union-back.jpg',
-    isClicked: false,
-  };
+  /***************************************************************************************************
+   **************************************PAYSTACK START***********************************************
+   ***************************************************************************************************/
+      public payStack = {
+        id: '1',
+        name: PAYMENT_GATEWAY.PAYSTACK,
+        img: '../../../assets/img/paystack.jpg',
+        isClicked: false,
+      };
 
-  options: PaystackOptions = {
-    amount: this.inpAmt,
-    email: 'odilichukwujoel@gmail.com',
-    currency: 'NGN',
-    ref: `${Math.ceil(Math.random() * 10e10)}`
-  };
+      public payStackOptions: PaystackOptions = {
+        amount: null,
+        email: null,
+        currency: 'NGN',
+        ref: `${Math.ceil(Math.random() * 10e10)}`
+      };
+  /***************************************************************************************************
+   **************************************PAYSTACK ENDS************************************************
+   ***************************************************************************************************/
 
-  constructor() { }
 
-  ngOnInit() {
-    console.log(this.inpAmt);
+  /***************************************************************************************************
+   **************************************FLUTTERWAVE START********************************************
+   ***************************************************************************************************/
+      public flutterWave = {
+          id: '2',
+          name: PAYMENT_GATEWAY.FLUTTERWAVE,
+          img: '../../../assets/img/flutter-wave.jpg',
+          isClicked: false,
+      };
+
+      public flutterWaveOption: RaveOptions = {
+        PBFPubKey: environment.FLUTTERWAVE_PUBLIC_KEY,
+        customer_email: null,
+        customer_firstname: null,
+        customer_lastname: null,
+        amount: null,
+        customer_phone: null,
+        txref: `${Math.ceil(Math.random() * 10e10)}`,
+        currency: 'NGN'
+      };
+  /***************************************************************************************************
+   **************************************FLUTTERWAVE ENDS*********************************************
+   ***************************************************************************************************/
+
+
+  /***************************************************************************************************
+   ****************************************UNION START************************************************
+   ***************************************************************************************************/
+      public unionBank = {
+        id: '3',
+        name: PAYMENT_GATEWAY.UNIONBANK,
+        img: '../../../assets/img/union-back.jpg',
+        isClicked: false,
+      };
+  /***************************************************************************************************
+   ******************************************UNION END************************************************
+   ***************************************************************************************************/
+
+  constructor(
+      private navParams: NavParams,
+      private modalCtrl: ModalController
+  ) {
+    this.inputData = this.navParams.data;
+    this.payStackOptions.amount = this.inputData.amount * 100; // PayStack Amount init
+    this.payStackOptions.email = this.inputData.user.email; // PayStack User email init
+
+    this.flutterWaveOption.amount = this.inputData.amount; // FlutterWave amount init
+    this.flutterWaveOption.customer_email = this.inputData.user.email; // FlutterWave User email init
+    this.flutterWaveOption.customer_firstname = this.inputData.user.surname; // FlutterWave user first name init
+    this.flutterWaveOption.customer_lastname = this.inputData.user.otherName; // FlutterWave user last name init
+    this.flutterWaveOption.customer_phone = this.inputData.user.phone; // FlutterWave user phone init
   }
 
-  ionViewWillEnter() {
-    console.log('will enter');
-  }
+  ngOnInit() { }
 
-  paymentInit() {
-    console.log('Payment initialized');
-    console.log(this.options);
-    this.options.amount = this.inpAmt;
-  }
-
-  paymentDone() {
-    const title = 'Payment successfull';
-    console.log(title);
-  }
-
-  paymentCancel() {
-    console.log('payment failed');
+  close() {
+      this.modalCtrl.dismiss();
   }
 
   selectedPaymentMethod(pay) {
@@ -81,4 +113,47 @@ export class PaymentOptionsComponent implements OnInit {
     }
   }
 
+
+  /***************************************************************************************************
+   ***************************************PAYSTACK START***********************************************
+   ***************************************************************************************************/
+      payStackInit() { }
+
+      payStackDone(ref) {
+        const data = {
+          paymentMethod: PAYMENT_METHOD.GATEWAY,
+          paymentGateway: this.payStack.name,
+          ...ref
+        };
+        this.modalCtrl.dismiss(data, 'payStack');
+      }
+
+      payStackCancel() {
+        this.modalCtrl.dismiss(null, 'payStack');
+      }
+  /***************************************************************************************************
+   ***************************************PAYSTACK ENDS***********************************************
+   ***************************************************************************************************/
+
+
+  /***************************************************************************************************
+   *************************************FLUTTERWAVE START*********************************************
+   ***************************************************************************************************/
+      flutterWaveInit() { }
+
+      flutterWaveDone(ref) {
+        const data = {
+          paymentMethod: PAYMENT_METHOD.GATEWAY,
+          paymentGateway: this.flutterWave.name,
+          ...ref
+        };
+        this.modalCtrl.dismiss(data, 'flutterWave');
+      }
+
+      flutterWaveCancel() {
+        this.modalCtrl.dismiss(null, 'flutterWave');
+      }
+  /***************************************************************************************************
+   *************************************FLUTTERWAVE ENDS**********************************************
+   ***************************************************************************************************/
 }

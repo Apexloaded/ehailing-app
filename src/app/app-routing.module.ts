@@ -82,6 +82,19 @@ const routes: Routes = [
   {
     path: 'pickup',
     loadChildren: () => import('./pages/pickup/pickup.module').then( m => m.PickupPageModule)
+  },
+  {
+    path: 'hire-bus',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./pages/hire-bus/hire-bus.module').then( m => m.HireBusPageModule)
+      },
+      {
+        path: ':id',
+        loadChildren: () => import('./pages/hire-bus/hire-details/hire-details.module').then( m => m.HireDetailsPageModule)
+      }
+    ]
   }
 ];
 @NgModule({

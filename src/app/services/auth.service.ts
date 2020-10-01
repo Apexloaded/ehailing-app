@@ -33,7 +33,7 @@ export class AuthService {
 
   async postLogin(data): Promise<LoginResponse> {
     const payload = cleanObject(data);
-    const url = `erp/customers/login`;
+    const url = `crm/customers/login`;
     const response = this.apiService.postApi(url, payload)
     .pipe(tap((res: LoginResponse) => {
       if (res.success) {
@@ -56,7 +56,7 @@ export class AuthService {
 
   creatCustomer(data): Observable<any> {
     const payload = cleanObject(data);
-    const url = `erp/+customers`;
+    const url = `crm/customers`;
     return this.apiService.postApi(url, payload)
     .pipe(
       switchMap((res: any) => {
@@ -65,7 +65,7 @@ export class AuthService {
             phone: res.payload.phone,
             password: data.password
           };
-          const loginUrl = `customers/login`;
+          const loginUrl = `crm/customers/login`;
           const login = this.apiService.postApi(loginUrl, user);
           return login;
         }
@@ -87,7 +87,7 @@ export class AuthService {
 
   getOtp(data): Observable<ApiResponse> {
     const payload = cleanObject(data);
-    const url = `erp/customers/otp`;
+    const url = `crm/customers/otp`;
     return this.apiService.postApi(url, payload).pipe(
         map((res: ApiResponse) => {
           if (res.success) {
@@ -100,7 +100,7 @@ export class AuthService {
 
   updateUser(data, id): Promise<ApiResponse> {
     const cData = cleanObject(data);
-    const url = `erp/customers/${id}`;
+    const url = `crm/customers/${id}`;
     return this.apiService.updateApi(url, cData).pipe(
         map((res: ApiResponse) => {
           if (res.success) {
@@ -115,7 +115,7 @@ export class AuthService {
   resetPassword(obj): Promise<ApiResponse> {
     const data = {password: obj.password};
     const payload = cleanObject(data);
-    const url = `erp/customers/${obj.id}`;
+    const url = `crm/customers/${obj.id}`;
     return this.apiService.updateApi(url, payload).pipe(
         map((res: ApiResponse) => {
           if (res.success) {
@@ -143,7 +143,7 @@ export class AuthService {
   }
 
   async retrieveCustomer(id) {
-    const url = `erp/customers?_id=${id}`;
+    const url = `crm/customers?_id=${id}`;
     const user = this.apiService.getApi(url).pipe(
         map((res: ApiResponse) => {
           console.log(res);

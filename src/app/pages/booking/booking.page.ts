@@ -4,12 +4,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PmtReservations, Schedules, Terminals} from '../../providers';
 import {Customer, PAYMENT_GATEWAY, PAYMENT_METHOD, PAYMENT_STATUS, PmtSchedules, Reservations, Terminal} from 'src/app/models';
 import {UtilitiesService} from 'src/app/services/utilities.service';
-import {IonSlides, LoadingController} from '@ionic/angular';
+import {IonSlides, LoadingController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services';
-import { PaystackOptions } from 'angular4-paystack';
-import { RaveOptions } from 'angular-rave';
-import { environment } from '../../../environments/environment';
+import {PaymentOptionsComponent} from "../../components/payment-options/payment-options.component";
 
 @Component({
   selector: 'app-booking',
@@ -44,6 +42,7 @@ export class BookingPage implements OnInit, AfterViewInit {
   seats: { label: number, selected: boolean, boarded: boolean, disabled: boolean }[] = [];
   reservations: Reservations[];
   schedule: PmtSchedules;
+  pmtRoute;
   scheduleArr: PmtSchedules[];
   selectedSeats = [];
 
@@ -64,35 +63,6 @@ export class BookingPage implements OnInit, AfterViewInit {
     }
   };
 
-  public paymentMethod = [
-    {
-      id: '1',
-      name: PAYMENT_GATEWAY.PAYSTACK,
-      img: '../../../assets/img/paystack.jpg',
-      isClicked: false,
-    },
-    {
-      id: '2',
-      name: PAYMENT_GATEWAY.FLUTTERWAVE,
-      img: '../../../assets/img/flutter-wave.jpg',
-      isClicked: false,
-    },
-    {
-      id: '3',
-      name: PAYMENT_GATEWAY.UNIONBANK,
-      img: '../../../assets/img/union-back.jpg',
-      isClicked: false,
-    }
-  ];
-
-  /********************** PAYSTACK PAYMENT OPTIONS START **************************/
-  options: PaystackOptions;
-  /********************** PAYSTACK PAYMENT OPTIONS ENDS ***************************/
-
-  /********************** FLUTTERWAVE PAYMENT OPTIONS START **************************/
-  raveOptions: RaveOptions;
-  /********************* FLUTTERWAVE PAYMENT OPTIONS ENDS ***************************/
-
   constructor(
     private prevRoute: PreviousRouteService,
     private fb: FormBuilder,
@@ -102,7 +72,8 @@ export class BookingPage implements OnInit, AfterViewInit {
     private router: Router,
     private authService: AuthService,
     private loadingCtrl: LoadingController,
-    private pmtReservations: PmtReservations
+    private pmtReservations: PmtReservations,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -160,6 +131,7 @@ export class BookingPage implements OnInit, AfterViewInit {
     slider.getActiveIndex().then(res => {
       if (res === 0) {
         this.router.navigateByUrl(`${url}`);
+        this.resetBookings();
         return;
       }
       this.prevSlide(slider);
@@ -250,7 +222,7 @@ export class BookingPage implements OnInit, AfterViewInit {
           this.pmtSchedules.recordRetrieve(`/reservation?boardingDate=${data.boardingDate}&pmtTerminalFrom=${data.terminalFrom}&pmtTerminalTo=${data.terminalTo}`)
               .then(res => {
                 if (res.payload.length > 0) {
-                  this.scheduleArr = res.payload.filter((f: any) => f.isReservable === true);
+                  this.scheduleArr = res.payload;
                   this.isSearchingSchedule = false;
                   el.dismiss();
                   this.slideNext(slider);
@@ -277,16 +249,17 @@ export class BookingPage implements OnInit, AfterViewInit {
    * * * * * * * * * * * * * * * * * * * * * Select Schedule Results From Slide One Search * * * * * * * * * * * ** * * * * * * *
    *************************************************@SlideTwo_Functions_Start****************************************************
    ******************************************************************************************************************************/
-      selectSchedule(schedule: PmtSchedules, slider: IonSlides) {
+      selectSchedule(schedule: PmtSchedules, pmtRoute, slider: IonSlides) {
         this.reservations = schedule.pmtReservations;
         this.schedule = schedule;
+        this.pmtRoute = pmtRoute;
         if (this.seats.length > 1) {
           this.seats = [];
         }
 
         /************************SET SOME VALUE FOR RESERVATIONS STARTS****************************/
         this.reservationData.pmtSchedule = this.schedule.id;
-        this.reservationData.pmtRoute = this.schedule.pmtRoute.id;
+        this.reservationData.pmtRoute = pmtRoute.id;
         /************************SET SOME VALUE FOR RESERVATIONS ENDS****************************/
 
         this.generateSeats();
@@ -314,10 +287,20 @@ export class BookingPage implements OnInit, AfterViewInit {
         this.bookForm.controls.seats.setValue(this.selectedSeats.length > 0 ? this.selectedSeats : null);
 
         /************************SET SOME VALUE FOR RESERVATIONS STARTS****************************/
-        this.reservationData.amount = this.bookForm.controls.seats.value ? (this.schedule.fare * this.bookForm.controls.seats.value.length) : null;
+        let fare = 0;
+        switch (this.schedule.pmtVehicle.vehicleClass) {
+          case 'first':
+            fare = this.pmtRoute.fareClass1;
+            break;
+          default:
+            fare = this.pmtRoute.fareClass2;
+            break;
+        }
+        if (!this.schedule.pmtVehicle) {
+          fare = this.pmtRoute.fareClass1;
+        }
+        this.reservationData.amount = this.bookForm.controls.seats.value ? (fare * this.bookForm.controls.seats.value.length) : null;
         this.reservationData.seatQuantity = this.bookForm.controls.seats.value ? this.bookForm.controls.seats.value.length : null;
-        this.options = this.payStackOptions(this.user);
-        this.raveOptions = this.flutterWaveOptions(this.user);
         /************************SET SOME VALUE FOR RESERVATIONS ENDS****************************/
       }
 
@@ -354,36 +337,79 @@ export class BookingPage implements OnInit, AfterViewInit {
 
 
 
-
-
-
   /******************************************************************************************************************************
    * * * * * * * * * * * * * * * * * * * Invoice Properties Displayed to User Before Payment* * * * * * * * * * * * * * * * * * *
    *************************************************@SlideFour_Functions_Start***************************************************
    ******************************************************************************************************************************/
+      bookNow() {
+        const paymentOptionsProps = {
+          amount: this.reservationData.amount,
+          user: this.user
+        };
 
-
-                            /**********SlideNext Function Clicked to slide to Slide4********************/
-
-
+        this.modalCtrl.create({
+          component: PaymentOptionsComponent,
+          componentProps: paymentOptionsProps
+        }).then(el => {
+          el.present();
+          el.onDidDismiss().then(res => {
+            if (res.data) {
+              if (res.data.status === 'pending' || res.data.status === 'success') {
+                this.createReservation(res.data);
+                return;
+              }
+              return;
+            }
+            return;
+          });
+        });
+      }
   /******************************************************************************************************************************
    * * * * * * * * * * * * * * * * * * * Invoice Properties Displayed to User Before Payment* * * * * * * * * * * * * * * * * * *
    *************************************************@SlideFour_Functions_Ends****************************************************
    ******************************************************************************************************************************/
 
 
-
-
-
-
   /*****************************************************************************************************************************
-   * * * * * * * * * * * * * * * * * * * * Payment Method Selection and Payment Processing * * * * * * * * * * * * * * * * * * *
-   *************************************************@SlideFive_Functions_Start**************************************************
+   * * * * * * * * * * * * * * * * * * * * Create Reservations Based on value from Slides* * * * * * * * * * * * * * * * * * * *
+   *******************************************@Create_Reservation_Functions_Start***********************************************
    *****************************************************************************************************************************/
-      cancelPaymentOption() {
+      createReservation(paymentRef) {
+        this.reservationData.paymentGateway = paymentRef.paymentGateway;
+        this.reservationData.paymentMethod = paymentRef.paymentMethod;
+        this.reservationData.trxref = paymentRef.trxref;
+        this.reservationData.gateway.currency = 'NGN';
+        this.loadingCtrl.create({
+          spinner: 'dots'
+        }).then(el => {
+          el.present();
+          this.pmtReservations.recordCreate(this.reservationData).then(res => {
+            if (res.success) {
+              const data = {
+                title: 'Successfully Created!',
+                msg: 'You have successfully reserved a seat'
+              };
+              this.bookForm.reset();
+              this.resetBookings();
+              this.utilitiesService.presentAlert(data.title, data.msg);
+            }
+            el.dismiss();
+          }).catch(err => {
+            const data = {
+              title: 'Something went wrong!',
+              msg: `${err}`
+            };
+            this.utilitiesService.presentAlert(data.title, data.msg);
+            el.dismiss();
+          });
+        });
+      }
+
+      resetBookings() {
         this.slider.slideTo(0);
         this.slideIndex = 1;
-        this.bookForm.reset();
+        this.schedule = null;
+        this.pmtRoute = null;
         this.reservationData = {
           amount: null,
           trxref: null,
@@ -400,165 +426,6 @@ export class BookingPage implements OnInit, AfterViewInit {
             currency: null
           }
         };
-        this.schedule = null;
-        this.paymentMethod.map(res => {
-          res.isClicked = false;
-        });
-        this.router.navigate(['/', 'book']);
-        console.log('cancelled');
-      }
-
-      selectedPaymentMethod(pay: any) {
-        this.paymentMethod.map(res => {
-          res.isClicked = false;
-          if (res === pay) {
-            res.isClicked = true;
-            /************************SET SOME VALUE FOR RESERVATIONS STARTS****************************/
-            this.reservationData.paymentGateway = pay.name;
-            this.reservationData.paymentMethod = PAYMENT_METHOD.GATEWAY;
-            this.reservationData.gateway.currency = this.options.currency;
-            /************************SET SOME VALUE FOR RESERVATIONS ENDS****************************/
-            this.utilitiesService.presentToast('Payment Processing...', 4000);
-          }
-        });
-      }
-
-      /***********************************************************************************************
-      ****************************************PAYSTACK START******************************************
-      ***********************************************************************************************/
-          payStackOptions(user): PaystackOptions {
-            return {
-              ref: `${this.schedule.code}-${this.reservationData.seatQuantity}-${Math.ceil(Math.random() * 10e10)}`,
-              email: user.email,
-              amount: this.reservationData.amount * 100,
-              currency: 'NGN',
-              metadata: {
-                name: user.surname + ' ' + user.otherName,
-                phone: user.phone,
-              },
-            };
-          }
-
-          payStackInit() {}
-
-          payStackDone(ref: {
-            message: string;
-            reference: string;
-            status: string;
-            trans: string;
-            transaction: string;
-            trxref: string;
-          }) {
-            switch (ref.status) {
-              case 'success':
-                this.reservationData.trxref = ref.reference;
-                this.createReservation();
-                break;
-              case 'pending':
-                this.reservationData.trxref = ref.reference;
-                this.createReservation();
-                break;
-              default:
-            }
-          }
-
-          payStackCancel() {
-            this.cancelPaymentOption();
-          }
-      /***********************************************************************************************
-       ****************************************PAYSTACK END*******************************************
-       ***********************************************************************************************/
-
-
-      /***********************************************************************************************
-       ****************************************FLUTTERWAVE START******************************************
-       ***********************************************************************************************/
-          flutterWaveOptions(user): RaveOptions {
-            return {
-              PBFPubKey: environment.FLUTTERWAVE_PUBLIC_KEY,
-              customer_email: user.email,
-              customer_firstname: user.otherName,
-              customer_lastname: user.surname,
-              custom_description: 'Payment for goods',
-              amount: this.reservationData.amount,
-              customer_phone: user.phone,
-              txref: `${this.schedule.code}-${this.reservationData.seatQuantity}-${Math.ceil(Math.random() * 10e10)}\``,
-              currency: 'NGN'
-            };
-          }
-
-          flutterWaveInit() {}
-
-          flutterWaveSuccess(ref: {
-            message: string;
-            reference: string;
-            status: string;
-            trans: string;
-            transaction: string;
-            trxref: string;
-          }) {
-            switch (ref.status) {
-              case 'success':
-                this.reservationData.trxref = ref.reference;
-                this.createReservation();
-                break;
-              case 'pending':
-                this.reservationData.trxref = ref.reference;
-                this.createReservation();
-                break;
-              default:
-            }
-          }
-
-          flutterWaveFailure() {
-            this.cancelPaymentOption();
-          }
-      /***********************************************************************************************
-       **************************************FLUTTERWAVE END******************************************
-       ***********************************************************************************************/
-
-  /*****************************************************************************************************************************
-   * * * * * * * * * * * * * * * * * * * * Payment Method Selection and Payment Processing * * * * * * * * * * * * * * * * * * *
-   *************************************************@SlideFive_Functions_Ends***************************************************
-   *****************************************************************************************************************************/
-
-
-
-
-
-  /*****************************************************************************************************************************
-   * * * * * * * * * * * * * * * * * * * * Create Reservations Based on value from Slides* * * * * * * * * * * * * * * * * * * *
-   *******************************************@Create_Reservation_Functions_Start***********************************************
-   *****************************************************************************************************************************/
-      createReservation() {
-        this.loadingCtrl.create({
-          spinner: 'dots'
-        }).then(el => {
-          el.present();
-          this.pmtReservations.recordCreate(this.reservationData).then(res => {
-            if (res.success) {
-              const data = {
-                title: 'Successfully Created!',
-                msg: 'You have successfully reserved a seat',
-                funcPassed: () => {
-                  this.router.navigateByUrl('/list-booking');
-                }
-              };
-              this.utilitiesService.presentRedirectAlert(data.title, data.msg, data.funcPassed());
-            }
-            el.dismiss();
-          }).catch(err => {
-            const data = {
-              title: 'Something went wrong!',
-              msg: `${err}`,
-              funcPassed: () => {
-                this.router.navigateByUrl('/book');
-              }
-            };
-            this.utilitiesService.presentRedirectAlert(data.title, data.msg, data.funcPassed());
-            el.dismiss();
-          });
-        });
       }
   /*****************************************************************************************************************************
    * * * * * * * * * * * * * * * * * * * * Create Reservations Based on value from Slides* * * * * * * * * * * * * * * * * * * *

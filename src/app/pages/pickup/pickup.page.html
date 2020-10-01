@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title class="ion-no-padding light">Pickup</ion-title>
   </ion-toolbar>
-  <ion-segment [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
+  <ion-segment [(ngModel)]="segment" class="header-segment" (ionChange)="segmentChanged($event)">
     <ion-segment-button value="0">
       <ion-label>REQUEST</ion-label>
     </ion-segment-button>
@@ -42,77 +42,108 @@
       <ion-grid class="ion-no-padding">
         <ion-row class="ion-padding-horizontal">
           <ion-col size="12" size-xl="6" offset-xl="3">
-            <ion-list class="ion-no-padding">
-              <ion-item color="light" lines="none">
-                <ion-label position="floating" color="primary">Pickup Date</ion-label>
-                <ion-input type="text"></ion-input>
-              </ion-item>
-              <ion-item color="light" lines="none">
-                <ion-label position="floating" color="primary">Other Name</ion-label>
-                <ion-input type="text"></ion-input>
-              </ion-item>
-              <ion-item color="light" lines="none">
-                <ion-label position="floating" color="primary">Other Name</ion-label>
-                <ion-input type="text"></ion-input>
-              </ion-item>
-            </ion-list>
+            <form [formGroup]="reqForm">
+              <div class="mt-5">
+                <div class="d-flex ion-justify-content-center ion-align-items-center pick-btn-holder">
+                  <div class="pick-location-btn d-flex ion-justify-content-center ion-align-items-center" (click)="getCurrentLocation()">
+                    <ion-icon name="location-outline" class="light"
+                      [class.success]="isLocationPicked"
+                      [class.light]="!isLocationPicked"
+                    ></ion-icon>
+                    <ion-spinner name="dots" *ngIf="isSearchingLocation"></ion-spinner>
+                  </div>
+                </div>
+                <ion-list class="px-2 mt-2">
+                  <ion-title class="mb-2"><span>Pickup fee </span> <span class="primary">₦5,000</span></ion-title>
+                  <ion-item color="light" lines="none">
+                    <ion-label color="primary">Seat Quantity</ion-label>
+                    <ion-select formControlName="seat" class="py-2">
+                      <ion-select-option value="1">1</ion-select-option>
+                      <ion-select-option value="2">2</ion-select-option>
+                      <ion-select-option value="3">3</ion-select-option>
+                      <ion-select-option value="4">4</ion-select-option>
+                      <ion-select-option value="5">5</ion-select-option>
+                      <ion-select-option value="6">6</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <ion-item color="light" lines="none">
+                    <ion-label color="primary">Current Address</ion-label>
+                    <ion-input type="text" formControlName="address" class="py-2"></ion-input>
+                  </ion-item>
+                  <ion-item color="light" lines="none">
+                    <ion-label color="primary">Select Terminal</ion-label>
+                    <ion-select class="py-2" formControlName="terminal">
+                      <ion-select-option *ngFor="let terminals of terminalTo" value="{{ terminals.id }}">{{ terminals.name }}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </form>
           </ion-col>
           <ion-col size="12" size-xl="6" offset-xl="3">
-            <ion-button shape="round" expand="full" size="large" (click)="updateBtn()">UPDATE</ion-button>
+            <ion-button shape="round" expand="full" size="large" class="mt-5" (click)="requestPickup()">Pay To Request</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-slide>
     <ion-slide>
-      TEst
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="pmtPickupArr.length < 1 && !error.isError && !isLoading">
+            <div class="empty-holder">
+              <ion-card>
+                <ion-card-content class="ion-text-center">
+                  <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
+                  <h3>Empty Request</h3>
+                  <ion-note>You do not have any pickup record.</ion-note>
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="pmtPickupArr.length > 0 && !error.isError && !isLoading">
+            <ion-list class="pickup">
+              <ion-item *ngFor="let pickup of pmtPickupArr" button (click)="viewPickup(pickup)">
+                <ion-avatar>
+                  <img src="../../../assets/img/house.png">
+                </ion-avatar>
+                <ion-label class="ml-2" *ngIf="pickup.paymentStatus !== 'PENDING'">
+                  <h6 class="d-flex ion-justify-content-between">
+                    <small class="ion-text-left medium">STATUS: <span class="light px-2"
+                      [class.pickedup]="pickup.pickupStatus === 'PICKEDUP'"
+                      [class.delivered]="pickup.pickupStatus === 'DELIVERED'"
+                      [class.pending]="pickup.pickupStatus === 'PENDING'"
+                      [class.dispatched]="pickup.pickupStatus === 'DISPATCHED'"
+                      [class.cancel]="pickup.pickupStatus === 'CANCEL'"
+                      [class.declined]="pickup.pickupStatus === 'DECLINED'"
+                    >{{ pickup.pickupStatus }}</span></small>
+                    <span class="ion-text-right">{{ pickup.updatedAt | date }}</span>
+                  </h6>
+                  <p><span class="medium">Address</span> <span class="dark ml-2">{{ pickup.address }}</span></p>
+                  <span class="ion-text-uppercase dark" *ngIf="pickup.pickupStatus === 'DISPATCHED'">Rider</span><span *ngIf="pickup.pickupStatus === 'DISPATCHED'" class="ion-text-uppercase success"> Dispatched</span>
+                </ion-label>
+                <ion-label class="ml-2" *ngIf="pickup.paymentStatus === 'PENDING'">
+                  <h6 class="d-flex ion-justify-content-between">
+                    <small class="ion-text-left medium">PAYMENT : <span class="secondary px-0"
+                    >{{ pickup.paymentStatus }}</span></small>
+                    <span class="ion-text-right">{{ pickup.updatedAt | date }}</span>
+                  </h6>
+                  <p><span class="danger mx-0">Pickup request is still pending, click to retry.</span></p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3" class="ion-text-center" *ngIf="isLoading">
+            <ion-spinner color="primary" name="dots"></ion-spinner>
+          </ion-col>
+          <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="!isLoading && error.isError">
+            <app-error
+              [icon]="error.icon"
+              [title]="error.title"
+              [msg]="error.message"
+            ></app-error>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-slide>
   </ion-slides>
 </ion-content>
-<!--<ion-content [fullscreen]="true" *ngIf="!isLoading && !error.isError">-->
-<!--  <ion-grid class="ion-no-padding">-->
-<!--    <ion-row>-->
-<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
-<!--        <div class="header">-->
-<!--          <div class="header-title-holder">-->
-<!--            <ion-back-button color="light" [defaultHref]="'/home'"></ion-back-button>-->
-<!--            <ion-title class="ion-no-padding light">Pickup</ion-title>-->
-<!--          </div>-->
-<!--          <div class="header-img">-->
-<!--            <ion-segment (ionChange)="segmentChanged($event)">-->
-<!--              <ion-segment-button value="request">-->
-<!--                <ion-label class="primary">Request</ion-label>-->
-<!--              </ion-segment-button>-->
-<!--              <ion-segment-button value="history">-->
-<!--                <ion-label class="primary">History</ion-label>-->
-<!--              </ion-segment-button>-->
-<!--            </ion-segment>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </ion-col>-->
-<!--    </ion-row>-->
-<!--    <ion-row class="ion-padding-horizontal">-->
-<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
-<!--        <h2 color="primary" class="my-3">Pickup Form</h2>-->
-<!--      </ion-col>-->
-<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
-<!--        <ion-list class="ion-no-padding">-->
-<!--          <ion-item color="light" lines="none">-->
-<!--            <ion-label position="floating" color="primary">Pickup Date</ion-label>-->
-<!--            <ion-input type="text"></ion-input>-->
-<!--          </ion-item>-->
-<!--          <ion-item color="light" lines="none">-->
-<!--            <ion-label position="floating" color="primary">Other Name</ion-label>-->
-<!--            <ion-input type="text"></ion-input>-->
-<!--          </ion-item>-->
-<!--          <ion-item color="light" lines="none">-->
-<!--            <ion-label position="floating" color="primary">Other Name</ion-label>-->
-<!--            <ion-input type="text"></ion-input>-->
-<!--          </ion-item>-->
-<!--        </ion-list>-->
-<!--      </ion-col>-->
-<!--      <ion-col size="12" size-xl="6" offset-xl="3">-->
-<!--        <ion-button shape="round" expand="full" size="large" (click)="updateBtn()">UPDATE</ion-button>-->
-<!--      </ion-col>-->
-<!--    </ion-row>-->
-<!--  </ion-grid>-->
-<!--</ion-content>-->
