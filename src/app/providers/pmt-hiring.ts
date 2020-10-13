@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { ApiResponse, Reservations} from '../models';
+import { ApiResponse } from '../models';
 import { ApiService, AuthService } from '../services';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class PmtPickups {
-    reservations: [];
+export class PmtHiring {
+    hiring: [];
 
     constructor(private apiService: ApiService, private authService: AuthService) {
         this.authService.getUser().then(user => {
             // const queryString = `?customer=${user.id}&populate=pmtRoute,pmtSchedule`;
             // this.recordRetrieve(queryString).then(res => {
-            //     this.reservations = res.payload;
+            //     this.hiring = res.payload;
             // });
         });
     }
 
     query(params?: any) {
         if (!params) {
-            return this.reservations;
+            return this.hiring;
         }
     }
 
@@ -31,14 +31,14 @@ export class PmtPickups {
     // }
 
     async recordRetrieve(queryString = ''): Promise<ApiResponse> {
-        const url = `pmt/pmt-pickups${queryString}`;
+        const url = `pmt/pmt-hirings${queryString}`;
         const proRes = this.apiService.getApi(url).pipe(
             map((res: ApiResponse) => res));
         return await proRes.toPromise();
     }
 
     async recordCreate(record): Promise<ApiResponse> {
-        const url = `pmt/pmt-pickups`;
+        const url = `pmt/pmt-hirings`;
         const proRes = this.apiService.postApi(url, record).pipe(
             map((res: ApiResponse) => {
                 if (res.success && res.payload) {
@@ -50,7 +50,7 @@ export class PmtPickups {
     }
 
     async recordUpdate(record, payload): Promise<ApiResponse> {
-        const url = `pmt/pmt-pickups/operation/${record.id}`;
+        const url = `pmt/pmt-hirings/operation/${record.id}`;
         const proRes = this.apiService.updateApi(url, payload).pipe(
             map((res: ApiResponse) => {
                 if (res.success && res.payload) {

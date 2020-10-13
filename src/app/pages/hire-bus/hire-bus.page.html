@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
@@ -22,10 +25,10 @@
       <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
         <div class="d-flex mt-5 mb-3 ion-justify-content-between">
           <h6>Recent Order</h6>
-          <h6 class="d-flex ion-align-items-center primary">list all <ion-icon color="primary" name="chevron-forward-outline"></ion-icon></h6>
+          <h6 class="d-flex ion-align-items-center primary" *ngIf="userHiring && userHiring.length > 3">list all <ion-icon color="primary" name="chevron-forward-outline"></ion-icon></h6>
         </div>
 
-        <div class="item-holder">
+        <div class="item-holder py-5" *ngIf="!isLoading && userHiring.length < 1 && !error.isError">
           <div class="item-empty ion-text-center">
             <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
             <h3 class="primary">Empty Request</h3>
@@ -33,17 +36,31 @@
           </div>
         </div>
 
-        <div class="item-holder mb-4" [routerLink]="['/','hire-bus',9087656789]">
-          <div class="item-hire">
-            <div class="hire-icon">
-              <img src="../../../assets/img/bg.jpg">
-            </div>
-            <div class="hire-content px-3">
-              <div>
-                <h5>Destination Name</h5>
-                <h4 class="mt-1 primary">₦55,000</h4>
+        <div class="item-holder py-5" *ngIf="error.isError && !isLoading">
+          <app-error
+            [icon]="error.icon"
+            [title]="error.title"
+            [msg]="error.message"
+          ></app-error>
+        </div>
+
+        <div class="d-flex ion-justify-content-center" *ngIf="isLoading">
+          <ion-spinner name="dots" color="primary"></ion-spinner>
+        </div>
+
+        <div *ngIf="!isLoading && userHiring.length > 0 && !error.isError">
+          <div class="item-holder mb-4" *ngFor="let hiring as userHiring" [routerLink]="['/','hire-bus',9087656789]">
+            <div class="item-hire">
+              <div class="hire-icon">
+                <img src="../../../assets/img/bg.jpg">
               </div>
-              <ion-icon name="navigate-circle-outline" color="primary"></ion-icon>
+              <div class="hire-content px-3">
+                <div>
+                  <h5>Destination Name</h5>
+                  <h4 class="mt-1 primary">₦55,000</h4>
+                </div>
+                <ion-icon name="navigate-circle-outline" color="primary"></ion-icon>
+              </div>
             </div>
           </div>
         </div>

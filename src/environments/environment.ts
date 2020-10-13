@@ -7,6 +7,7 @@ export const environment = {
   // api: 'http://192.168.0.168/api',
   api: 'http://3.9.221.25/api',
   // api: 'http://172.16.17.191/api',
+  googleMapsApi: 'AIzaSyAhOd8cqDmqCZ5ORCftfwtrpAtiG1_A0H0',
   PMT_SUPPORT_EMAIL: 'contact@pmt.ng',
   API_KEY: 'PEACE-e6db11d1f8a6208de8cb-Z',
   PAYSTACK_KEY: 'pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be',

@@ -10,3 +10,4 @@ export * from './previous-route.service';
 export * from './utilities.service';
 export * from './tickets.service';
 export * from './location.service';
+export * from './google-map.service';

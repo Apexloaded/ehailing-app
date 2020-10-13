@@ -18,10 +18,20 @@ import {
   ErrorInterceptor,
   SupportService,
   TicketsService,
-  UtilitiesService, StorageService, LocationService
+  UtilitiesService, StorageService, LocationService, GoogleMapService
 } from './services';
-import {Terminals, States, Schedules, PmtReservations, PmtMail, PmtTickets, PmtPickups} from './providers';
+import {
+  Terminals,
+  States,
+  Schedules,
+  PmtReservations,
+  PmtMail,
+  PmtTickets,
+  PmtPickups,
+  PmtHiring
+} from './providers';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,9 +62,12 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     Schedules,
     PmtTickets,
     PmtPickups,
+    PmtHiring,
     LocationService,
     PreviousRouteService,
-    Geolocation
+    GoogleMapService,
+    Geolocation,
+    NativeGeocoder
   ],
   bootstrap: [AppComponent]
 })

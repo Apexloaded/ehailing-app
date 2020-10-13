@@ -64,4 +64,18 @@ export class DetailsPage implements OnInit {
           });
   }
 
+    doRefresh(ev) {
+        this.isLoading = true;
+        setTimeout(() => {
+            this.activatedRoute.paramMap.subscribe(res => {
+                if (!res.has('id')) {
+                    return;
+                }
+                const mailId = res.get('id');
+                this.getMailByID(mailId);
+            });
+            ev.target.complete();
+        }, 2000);
+    }
+
 }

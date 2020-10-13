@@ -21,7 +21,7 @@ export class PickupPage implements OnInit {
   public isLoading: boolean;
   public user: Customer;
   public sliderOptions = {
-    initialSlide: 1,
+    initialSlide: 0,
     slidesPerView: 1,
     speed: 400,
     direction: 'horizontal',

@@ -5,3 +5,4 @@ export { PmtReservations } from './reservations';
 export { PmtMail } from './mail';
 export { PmtTickets } from './tickets';
 export { PmtPickups } from './pmt-pickup';
+export { PmtHiring } from './pmt-hiring';

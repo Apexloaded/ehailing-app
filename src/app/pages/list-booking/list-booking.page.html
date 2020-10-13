@@ -19,12 +19,7 @@
 </div>
 <ion-content *ngIf="!isLoading && error.isError">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-            pullingIcon="chevron-down-circle-outline"
-            pullingText="Pull to refresh"
-            refreshingSpinner="circles"
-            refreshingText="Refreshing...">
-    </ion-refresher-content>
+    <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <app-error
           [icon]="error.icon"
@@ -35,7 +30,7 @@
 <ion-content *ngIf="!isLoading && !error.isError">
   <ion-grid>
     <ion-row>
-      <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="!customerReservations && customerReservations.length < 1">
+      <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="customerReservations && customerReservations.length < 1">
         <div class="empty-holder">
           <ion-card>
             <ion-card-content>

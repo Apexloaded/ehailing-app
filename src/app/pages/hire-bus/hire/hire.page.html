@@ -1,31 +1,104 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/hire-bus"></ion-back-button>
+      <ion-back-button color="light" defaultHref="/hire-bus"></ion-back-button>
     </ion-buttons>
+    <ion-title class="ion-no-padding light">Hire Now</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
-        <div>
-          <ion-title class="ion-no-padding dark">Hire A Bus</ion-title>
+  <form [formGroup]="hireForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
           <div class="from-to-form mt-2">
             <ion-item lines="none">
-              <ion-label class="medium">From : </ion-label>
-              <ion-input placeholder="Your Location"></ion-input>
+              <ion-label class="primary lbl">From : </ion-label>
+              <ion-input placeholder="Your Location" formControlName="locationFrom" (ionChange)="updateLocationFrom()"></ion-input>
             </ion-item>
 
             <div class="divider my-1"></div>
             <ion-item lines="none">
-              <ion-label class="medium">To : </ion-label>
-              <ion-input placeholder="Destination"></ion-input>
+              <ion-label class="primary">To : </ion-label>
+              <ion-input placeholder="Destination" formControlName="locationTo"></ion-input>
             </ion-item>
           </div>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+          <div [class.hidden]="autocompleteItems.length < 1"
+               [class.suggestion-box]="autocompleteItems.length > 0">
+            <div class="suggestion-holder">
+              <div class="list-suggestions" *ngFor="let predictions of autocompleteItems" (click)="selectSearchResult(predictions)">
+                <label>{{ predictions.description }}</label>
+              </div>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-3">
+          <ion-label color="primary lbl">Rent Type</ion-label>
+          <div class="mt-1 px-2 input py-2">
+            <ion-radio-group class="select">
+              <div class="list">
+                <ion-radio slot="start" color="primary" value="ONE_WAY"></ion-radio>
+                <ion-label color="medium">One Way</ion-label>
+              </div>
+              <div class="list ml-4">
+                <ion-radio slot="start" color="primary" value="TWO_WAY"></ion-radio>
+                <ion-label color="medium">Round Trip</ion-label>
+              </div>
+            </ion-radio-group>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-3">
+          <ion-row>
+            <ion-col size="6" class="ion-no-padding">
+              <ion-label color="primary lbl">Departure Date</ion-label>
+              <ion-datetime
+                class="input ion-no-padding py-2 px-2"
+                display-format="DD MMM YYYY"
+                picker-format="DD MMM YYYY"
+                [min]="event.startDate"
+                [max]="event.endDate"
+                placeholder="27 Sep 2014"
+              ></ion-datetime>
+            </ion-col>
+            <ion-col size="6" class="ion-no-padding">
+              <ion-label color="primary lbl">Departure Date</ion-label>
+              <ion-datetime
+                class="input ion-no-padding py-2 px-2"
+                display-format="DD MMM YYYY"
+                picker-format="DD MMM YYYY"
+                [min]="event.startDate"
+                [max]="event.endDate"
+                placeholder="27 Sep 2014"
+              ></ion-datetime>
+            </ion-col>
+          </ion-row>
+  <!--        <div class="d-flex ion-justify-content-between">-->
+  <!--          <div>-->
+  <!--            <ion-label color="primary lbl">Depature Date</ion-label>-->
+  <!--            <ion-datetime-->
+  <!--              class="input ion-no-padding py-2 px-2"-->
+  <!--              display-format="DD MMM YYYY"-->
+  <!--              picker-format="DD MMM YYYY"-->
+  <!--              [min]="event.startDate"-->
+  <!--              [max]="event.endDate"-->
+  <!--              placeholder="27 Sep 2014"-->
+  <!--            ></ion-datetime>-->
+  <!--          </div>-->
+  <!--          <div>-->
+  <!--            <ion-label color="primary lbl">Return Date</ion-label>-->
+  <!--            <ion-datetime-->
+  <!--              class="input ion-no-padding py-2 px-2"-->
+  <!--              display-format="DD MMM YYYY"-->
+  <!--              picker-format="DD MMM YYYY"-->
+  <!--              [min]="event.startDate"-->
+  <!--              [max]="event.endDate"-->
+  <!--              placeholder="27 Sep 2014"-->
+  <!--            ></ion-datetime>-->
+  <!--          </div>-->
+  <!--        </div>-->
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

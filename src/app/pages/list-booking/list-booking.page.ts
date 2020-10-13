@@ -68,7 +68,7 @@ export class ListBookingPage implements OnInit {
       this.isLoading = false;
       this.error.isError = true;
       this.error.icon = 'alert-outline';
-      this.error.title = 'An Error Occured';
+      this.error.title = 'An Error Occurred!';
       this.error.message = 'We couldn\'t retrieve your reservations records, please pull down to try again.';
     });
   }
