@@ -12,6 +12,7 @@ export class BookingDetailsPage implements OnInit {
   public customerReservations: Reservations;
   public isLoading: boolean;
   public paymentStatus: string;
+  public pickupId: string;
 
   public error = {
     isError: null,
@@ -37,8 +38,8 @@ export class BookingDetailsPage implements OnInit {
         return;
       }
 
-      const id = paramMap.get('id');
-      this.getReservations(id);
+      this.pickupId = paramMap.get('id');
+      this.getReservations(this.pickupId);
     });
   }
 
@@ -58,7 +59,6 @@ export class BookingDetailsPage implements OnInit {
             this.paymentStatus = 'PENDING';
             break;
         }
-        console.log(this.customerReservations);
         return;
       }
     }).catch(err => {
@@ -68,5 +68,13 @@ export class BookingDetailsPage implements OnInit {
       this.error.title = 'An Error Occured';
       this.error.message = 'We couldn\'t retrieve your reservations records, please pull down to try again.';
     });
+  }
+
+  doRefresh(ev) {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.getReservations(this.pickupId);
+      ev.target.complete();
+    }, 2000);
   }
 }

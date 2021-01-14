@@ -4,6 +4,11 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title class="ion-no-padding light">Hire A Bus</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/','hire-bus','hire']">
+        <ion-icon name="add-outline" class="light" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -33,6 +38,7 @@
             <ion-icon name="water-outline" color="primary" class="icon"></ion-icon>
             <h3 class="primary">Empty Request</h3>
             <ion-note>You have not made any order yet.</ion-note>
+            <ion-button [routerLink]="['/','hire-bus','hire']">Hire Now</ion-button>
           </div>
         </div>
 
@@ -49,15 +55,19 @@
         </div>
 
         <div *ngIf="!isLoading && userHiring.length > 0 && !error.isError">
-          <div class="item-holder mb-4" *ngFor="let hiring as userHiring" [routerLink]="['/','hire-bus',9087656789]">
+          <div class="item-holder mb-4" *ngFor="let hiring of userHiring" [routerLink]="['/','hire-bus',hiring.id]">
             <div class="item-hire">
               <div class="hire-icon">
                 <img src="../../../assets/img/bg.jpg">
               </div>
               <div class="hire-content px-3">
                 <div>
-                  <h5>Destination Name</h5>
-                  <h4 class="mt-1 primary">₦55,000</h4>
+                  <h6>{{ hiring.type }}</h6>
+                  <h4 class="mt-1 primary">₦{{ hiring.actualCharge }}</h4>
+                  <small
+                    [class.secondary]="hiring.status === 'PENDING'"
+                    [class.success]="hiring.status !== 'PENDING'"
+                  >{{ hiring.status }}</small>
                 </div>
                 <ion-icon name="navigate-circle-outline" color="primary"></ion-icon>
               </div>

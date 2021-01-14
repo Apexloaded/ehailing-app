@@ -38,7 +38,7 @@ export class Terminals {
   }
 
   async recordRetrieve(queryString = ''): Promise<ApiResponse> {
-    const url = `pmt/pmt-terminals${queryString}`;
+    const url = `pmt/terminals${queryString}`;
     const proRes = this.apiService.getApi(url).pipe(
       map((res: ApiResponse) => res));
     return await proRes.toPromise();

@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
 import { EditPageRoutingModule } from './edit-routing.module';
-
 import { EditPage } from './edit.page';
-import {EditProfileComponent} from "../../../components/edit-profile/edit-profile.component";
+import { EditProfileComponent } from '../../../components/edit-profile/edit-profile.component';
+import { SharedModule } from '../../../modules/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -15,7 +13,8 @@ import {EditProfileComponent} from "../../../components/edit-profile/edit-profil
     ReactiveFormsModule,
     FormsModule,
     IonicModule,
-    EditPageRoutingModule
+    EditPageRoutingModule,
+    SharedModule
   ],
   declarations: [EditPage, EditProfileComponent]
 })

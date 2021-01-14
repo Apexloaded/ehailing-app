@@ -72,7 +72,7 @@ export class PickupPage implements OnInit {
 
   buildForm() {
     this.reqForm = this.fb.group({
-      amount: new FormControl(1000, {
+      amount: new FormControl(5000, {
         updateOn: 'change',
         validators: [Validators.required]
       }),
@@ -107,7 +107,6 @@ export class PickupPage implements OnInit {
       if (res.success) {
         this.isPickupLoading = false;
         this.pmtPickupArr = res.payload;
-        console.log(this.pmtPickupArr);
         return;
       }
       this.isPickupLoading = false;

@@ -1,9 +1,121 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>hire-details</ion-title>
+<ion-header class="ion-no-border" *ngIf="!isLoading">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/hire-bus'"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding">Hiring</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content *ngIf="!isLoading">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12" size-xl="6" offset-xl="3">
+        <ion-list class="ion-no-padding">
+          <ion-item-divider color="primary">
+            <ion-label class="light ion-text-center">Hiring Details</ion-label>
+          </ion-item-divider>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="arrow-undo-circle-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Terminal From</h2>
+              <span>{{ hiredItem.pmtTerminalFrom.name}}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="arrow-redo-circle-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Terminal To</h2>
+              <span>{{ hiredItem.pmtTerminalTo.name}}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="newspaper-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Date Requested</h2>
+              <span>{{ hiredItem.createdAt | date}}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="calendar-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Departure Date</h2>
+              <span>{{ hiredItem.departureDate | date}}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="earth-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Trip Type</h2>
+              <span>{{ hiredItem.tripType }}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="hourglass-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Type</h2>
+              <span>{{ hiredItem.type }}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="car-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Vehicle</h2>
+              <span>{{ hiredItem.vehicleType }}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="help-buoy-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Current Status</h2>
+              <span class="ion-text-right pr-3"
+                  [class.secondary]="hiredItem.status === 'PENDING'"
+                  [class.success]="hiredItem.status !== 'PENDING'"
+              >{{ hiredItem.status }}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item-divider color="primary">
+            <ion-label class="light ion-text-center">Payment Details</ion-label>
+          </ion-item-divider>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="cash-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Amount Paid</h2>
+              <span>₦{{ hiredItem.actualCharge }}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="full" color="light">
+            <ion-avatar>
+              <ion-icon name="clipboard-outline"></ion-icon>
+            </ion-avatar>
+            <ion-label class="ion-no-margin">
+              <h2 class="ion-no-padding primary">Payment Status</h2>
+              <span
+                [class.secondary]="hiredItem.paymentStatus === 'PENDING'"
+                [class.success]="hiredItem.paymentStatus !== 'PENDING'"
+              >{{ hiredItem.paymentStatus }}</span>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

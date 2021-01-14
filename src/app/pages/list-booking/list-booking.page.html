@@ -43,11 +43,11 @@
       </ion-col>
       <ion-col size="12" size-xl="6" offset-xl="3" *ngIf="customerReservations && customerReservations.length > 0">
         <ion-list class="ion-no-padding">
-          <ion-item *ngFor="let reservation of customerReservations" lines="none" button detail="" [routerLink]="['/','list-booking',reservation.id]">
+          <ion-item *ngFor="let reservation of customerReservations.reverse()" lines="none" button detail="" (click)="viewBooking(reservation)">
             <ion-avatar slot="start">
               <img src="../../../assets/img/seat-blue.png">
             </ion-avatar>
-            <ion-label class="d-flex ion-align-items-center ion-justify-content-between">
+            <ion-label class="d-flex ion-align-items-center ion-justify-content-between" *ngIf="reservation.paymentStatus !== 'PENDING'">
               <div>
                 <h3><span class="primary mr-1">From</span>{{ reservation.pmtRoute.name.split('=>')[0] }}</h3>
                 <h3><span class="primary mr-1">To</span>{{ reservation.pmtRoute.name.split('=>')[1] }}</h3>
@@ -55,6 +55,17 @@
                 <p class="booking-date">Booked on <ion-text>{{ reservation.createdAt | date }}</ion-text></p>
               </div>
               <span class="amount">₦{{ reservation.amount }}</span>
+            </ion-label>
+            <ion-label class="d-flex ion-align-items-center ion-justify-content-between" *ngIf="reservation.paymentStatus === 'PENDING'">
+              <div>
+                <h3><span class="primary mr-1">From</span>{{ reservation.pmtRoute.name.split('=>')[0] }}</h3>
+                <h3><span class="primary mr-1">To</span>{{ reservation.pmtRoute.name.split('=>')[1] }}</h3>
+                <h6 class="d-flex ion-justify-content-between">
+                  <small class="ion-text-left medium">PAYMENT : <span class="secondary px-0"
+                  >{{ reservation.paymentStatus }}</span></small>
+                </h6>
+                <span class="ion-text-right">{{ reservation.updatedAt | date }}</span>
+              </div>
             </ion-label>
           </ion-item>
         </ion-list>

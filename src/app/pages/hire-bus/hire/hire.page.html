@@ -12,16 +12,15 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
-          <div class="from-to-form mt-2">
+          <div class="from-to-form mt-1">
             <ion-item lines="none">
               <ion-label class="primary lbl">From : </ion-label>
               <ion-input placeholder="Your Location" formControlName="locationFrom" (ionChange)="updateLocationFrom()"></ion-input>
             </ion-item>
-
             <div class="divider my-1"></div>
             <ion-item lines="none">
               <ion-label class="primary">To : </ion-label>
-              <ion-input placeholder="Destination" formControlName="locationTo"></ion-input>
+              <ion-input placeholder="Destination" formControlName="locationTo" (ionChange)="updateLocationTo()"></ion-input>
             </ion-item>
           </div>
           <div [class.hidden]="autocompleteItems.length < 1"
@@ -33,10 +32,41 @@
             </div>
           </div>
         </ion-col>
-        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-3">
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-2">
+          <ion-label color="primary lbl">Hiring Type</ion-label>
+          <ion-select class="input mt-1" placeholder="Choose an option" formControlName="hiringType">
+            <ion-select-option value="HOME_HOME">Home - Home</ion-select-option>
+            <ion-select-option value="HOME_TERMINAL">Home - Terminal</ion-select-option>
+            <ion-select-option value="TERMINAL_HOME">Terminal - Home</ion-select-option>
+            <ion-select-option value="TERMINAL_TERMINAL">Terminal - Terminal</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-2">
+          <ion-label color="primary lbl">Vehicle Type</ion-label>
+          <ion-select class="input mt-1" placeholder="Choose an option" formControlName="vehicleType">
+            <ion-select-option *ngFor="let vehicles of vehicleType" value="{{ vehicles.name }}">{{ vehicles.name }}</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-2">
+          <ion-row *ngIf="!isTerminalLoading">
+            <ion-col size="6" class="ion-no-padding">
+              <ion-label color="primary lbl">Terminal From</ion-label>
+              <ion-select class="input" placeholder="Select terminal" formControlName="terminalFrom" (ionChange)="onSelectTerminalFrom($event)">
+                <ion-select-option *ngFor="let terminal of terminalFrom" value="{{ terminal.id }}">{{ terminal.name }}</ion-select-option>
+              </ion-select>
+            </ion-col>
+            <ion-col size="6" class="ion-no-padding">
+              <ion-label color="primary lbl">Terminal To</ion-label>
+              <ion-select class="input" placeholder="Select terminal" formControlName="terminalTo">
+                <ion-select-option *ngFor="let terminal of terminalTo" value="{{ terminal.id }}">{{ terminal.name }}</ion-select-option>
+              </ion-select>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-2">
           <ion-label color="primary lbl">Rent Type</ion-label>
           <div class="mt-1 px-2 input py-2">
-            <ion-radio-group class="select">
+            <ion-radio-group class="select" formControlName="rentType" (ionChange)="selectRentType(arrivalDate, $event)">
               <div class="list">
                 <ion-radio slot="start" color="primary" value="ONE_WAY"></ion-radio>
                 <ion-label color="medium">One Way</ion-label>
@@ -48,7 +78,7 @@
             </ion-radio-group>
           </div>
         </ion-col>
-        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-3">
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-2">
           <ion-row>
             <ion-col size="6" class="ion-no-padding">
               <ion-label color="primary lbl">Departure Date</ion-label>
@@ -59,10 +89,11 @@
                 [min]="event.startDate"
                 [max]="event.endDate"
                 placeholder="27 Sep 2014"
+                formControlName="departureDate"
               ></ion-datetime>
             </ion-col>
-            <ion-col size="6" class="ion-no-padding">
-              <ion-label color="primary lbl">Departure Date</ion-label>
+            <ion-col size="6" class="ion-no-padding hidden" #arrivalDate>
+              <ion-label color="primary lbl">Return Date</ion-label>
               <ion-datetime
                 class="input ion-no-padding py-2 px-2"
                 display-format="DD MMM YYYY"
@@ -70,33 +101,19 @@
                 [min]="event.startDate"
                 [max]="event.endDate"
                 placeholder="27 Sep 2014"
+                formControlName="returnDate"
               ></ion-datetime>
             </ion-col>
           </ion-row>
-  <!--        <div class="d-flex ion-justify-content-between">-->
-  <!--          <div>-->
-  <!--            <ion-label color="primary lbl">Depature Date</ion-label>-->
-  <!--            <ion-datetime-->
-  <!--              class="input ion-no-padding py-2 px-2"-->
-  <!--              display-format="DD MMM YYYY"-->
-  <!--              picker-format="DD MMM YYYY"-->
-  <!--              [min]="event.startDate"-->
-  <!--              [max]="event.endDate"-->
-  <!--              placeholder="27 Sep 2014"-->
-  <!--            ></ion-datetime>-->
-  <!--          </div>-->
-  <!--          <div>-->
-  <!--            <ion-label color="primary lbl">Return Date</ion-label>-->
-  <!--            <ion-datetime-->
-  <!--              class="input ion-no-padding py-2 px-2"-->
-  <!--              display-format="DD MMM YYYY"-->
-  <!--              picker-format="DD MMM YYYY"-->
-  <!--              [min]="event.startDate"-->
-  <!--              [max]="event.endDate"-->
-  <!--              placeholder="27 Sep 2014"-->
-  <!--            ></ion-datetime>-->
-  <!--          </div>-->
-  <!--        </div>-->
+        </ion-col>
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal mt-2">
+          <ion-label color="primary lbl">Short Description</ion-label>
+          <ion-textarea class="input" rows="2" formControlName="description"></ion-textarea>
+        </ion-col>
+      </ion-row>
+      <ion-row class="stick-bottom">
+        <ion-col size="12" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
+          <ion-button shape="round" (click)="hireBtn()" expand="full">Hire Now</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

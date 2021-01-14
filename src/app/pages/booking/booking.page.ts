@@ -228,11 +228,15 @@ export class BookingPage implements OnInit, AfterViewInit {
                   this.slideNext(slider);
                   return;
                 }
-                this.utilitiesService.presentToast('No Reservation Found', 3000);
+                this.utilitiesService.presentToast('No Reservation Found', 4000);
                 el.dismiss();
               }).catch(err => {
                 el.dismiss();
-                console.log(err);
+                if (err === 'PmtSchedule fetchForReservationService. Sorry! There is no exact route for the selected terminals') {
+                  this.utilitiesService.presentToast('No Reservation Found', 4000);
+                  return;
+                }
+                this.utilitiesService.presentToast('Something went wrong, please try again', 4000);
               });
         });
       }

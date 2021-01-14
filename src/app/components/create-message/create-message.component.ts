@@ -21,7 +21,7 @@ export class CreateMessageComponent implements OnInit {
       private fb: FormBuilder,
       private utilitiesService: UtilitiesService,
       private authService: AuthService,
-      private envService: EnvService,
+      public envService: EnvService,
       private supportService: SupportService,
       private loadingCtrl: LoadingController
   ) { }

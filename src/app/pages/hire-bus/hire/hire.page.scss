@@ -3,6 +3,9 @@
 }
 ion-content {
   --background: transparent;
+  form, ion-grid {
+    height: 100%;
+  }
 }
 
 .hidden {
@@ -11,9 +14,9 @@ ion-content {
 .show {
   display: block;
 }
+
 .from-to-form {
   background-color: var(--ion-color-light);
-  padding: .2em;
   border-radius: 10px;
 
   ion-item {
@@ -58,6 +61,10 @@ ion-datetime {
   font-size: 14px;
 }
 
+ion-select {
+  font-size: 14px;
+}
+
 ion-radio-group {
   display: flex;
   width: 100%;
@@ -77,4 +84,9 @@ ion-radio-group {
       width: 16px;
     }
   }
+}
+
+.stick-bottom {
+  position: sticky;
+  top: 100%;
 }

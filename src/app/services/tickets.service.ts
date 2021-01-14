@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Tickets } from '../models/pmt-tickets';
-import {ApiService} from './api.service';
-import {AuthService} from './auth.service';
 import {PmtTickets} from '../providers/tickets';
+import {EnvService} from './env.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +11,7 @@ export class TicketsService {
     public tickets: Tickets;
     constructor(
         private ticketsProvider: PmtTickets,
-        private authService: AuthService
+        private envService: EnvService
     ) {}
 
     getTickets(query) {
@@ -20,7 +19,7 @@ export class TicketsService {
     }
 
     createTicket(data) {
-        return this.ticketsProvider.recordCreate(data);
+        return this.ticketsProvider.recordCreate(data, `?apiKey=${this.envService.apiKey}`);
     }
 
     replyTicket(ticket, payload) {

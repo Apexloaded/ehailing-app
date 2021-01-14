@@ -31,9 +31,10 @@ export class HireBusPage implements OnInit {
   }
 
   getHirings(customer: Customer) {
-    this.pmtHiring.recordRetrieve(`?customer=${customer.id}`)
+    this.pmtHiring.recordRetrieve(`?customer=${customer.id}&populate=pmtTerminalFrom`)
         .then(response => {
           this.isLoading = false;
+          console.log(response.payload);
           if (response.success) {
             this.userHiring = response.payload;
           }
