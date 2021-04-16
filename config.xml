@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.pmt.transport" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Pmt Customer</name>
-    <description>Peace mass transit app</description>
+    <description>Peace mass transit customer mobile</description>
     <author email="support@j3adesign.com" href="https://www.j3adesign.com">J3a Design</author>
     <content src="index.html" />
     <access origin="*" />

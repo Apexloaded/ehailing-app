@@ -79,6 +79,7 @@ export class OtpFormComponent implements OnInit {
           });
         }
       }).catch(err => {
+        console.log(err);
         el.dismiss();
         this.utilitiesService.presentToast('Something went wrong', 4000);
       });

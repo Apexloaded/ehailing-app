@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  api: 'https://api.pmt.com.ng/api',
+  api: 'https://api.pmt.ng/api',
   googleMapsApi: 'AIzaSyAhOd8cqDmqCZ5ORCftfwtrpAtiG1_A0H0',
   PMT_SUPPORT_EMAIL: 'contact@pmt.ng',
   API_KEY: 'PEACE-e6db11d1f8a6208de8cb-Z',

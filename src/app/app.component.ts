@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AlertController, MenuController, Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services';
-import { PreviousRouteService } from './services/previous-route.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -29,31 +29,16 @@ export class AppComponent implements OnInit{
       title: 'Unread',
       url: '/messages/unread',
       icon: 'mail-unread'
-    },
-    // {
-    //   title: 'Archived',
-    //   url: '/folder/Archived',
-    //   icon: 'archive'
-    // },
-    // {
-    //   title: 'Trash',
-    //   url: '/folder/Trash',
-    //   icon: 'trash'
-    // },
-    // {
-    //   title: 'Spam',
-    //   url: '/folder/Spam',
-    //   icon: 'warning'
-    // }
+    }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private menuCtrl: MenuController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertCtrl: AlertController,
+    private _location: Location
   ) {
     this.initializeApp();
     this.isAuthenticate();
@@ -63,6 +48,25 @@ export class AppComponent implements OnInit{
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      if (this._location.isCurrentPathEqualTo('/app/home')) {
+        this.showExitConfirm();
+        processNextHandler();
+      } else {
+        this._location.back();
+      }
+    });
+
+    this.platform.backButton.subscribeWithPriority(5, () => {
+      this.alertCtrl.getTop().then(r => {
+        if (r) {
+          navigator['app'].exitApp();
+        }
+      }).catch(e => {
+        console.log(e);
+      })
     });
   }
 
@@ -82,6 +86,28 @@ export class AppComponent implements OnInit{
     });
     this.authService.isLoggedInChanged.subscribe(res => {
       this.isAuth = res;
+    });
+  }
+
+  showExitConfirm() {
+    this.alertCtrl.create({
+      header: 'Terminate App',
+      message: 'Do you want to close the app?',
+      backdropDismiss: false,
+      buttons: [{
+        text: 'Stay',
+        role: 'cancel',
+        handler: () => {
+          console.log('Application exit prevented!');
+        }
+      }, {
+        text: 'Exit',
+        handler: () => {
+          navigator['app'].exitApp();
+        }
+      }]
+    }).then(alert => {
+        alert.present();
     });
   }
 }

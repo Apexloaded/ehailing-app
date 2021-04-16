@@ -86,7 +86,7 @@ export class LoginPage implements OnInit {
       this.authService.postLogin(payload).then((res: any) => {
         if (res.success) {
           el.dismiss();
-          this.utilitiesService.presentToast(`Login successful. Welcome! PML Online`, 3000);
+          this.utilitiesService.presentToast(`Welcome to PMT Mobile`, 3000);
           this.loginForm.reset();
           this.router.navigate(['/home']);
           return;

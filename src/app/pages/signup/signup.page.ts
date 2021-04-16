@@ -105,7 +105,6 @@ export class SignupPage implements OnInit {
     }
 
     const data: any = {
-      customerType: this.slideOne.controls.accountType.value,
       title: this.slideTwo.controls.title.value,
       surname: this.slideTwo.controls.surname.value,
       otherName: this.slideTwo.controls.otherName.value,

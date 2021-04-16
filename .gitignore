@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 log.txt
 npm-debug.log*
 
+pmt-transport-app.keystore
+pmt-mobile.apk
+
 /.idea
 /.ionic
 /.sass-cache
