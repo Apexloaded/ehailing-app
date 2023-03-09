@@ -9,7 +9,11 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-android": "ionic cordova build --release android",
+    "gen-key": "keytool -genkey -v -keystore release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000",
+    "sign-app": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore pmt-transport-app.keystore ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk alias_name",
+    "zip-app": "zipalign -v 4 ./platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk pmt-mobile-app.apk"
   },
   "private": true,
   "dependencies": {
@@ -42,7 +46,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
-    "cordova-android": "^9.0.0",
+    "cordova-android": "^9.1.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-device": "^2.0.2",
@@ -82,8 +86,8 @@
       "cordova-plugin-nativegeocoder": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

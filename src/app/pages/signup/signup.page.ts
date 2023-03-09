@@ -132,6 +132,7 @@ export class SignupPage implements OnInit {
                 el.dismiss();
                 this.slideOne.reset();
                 this.slideTwo.reset();
+                this.router.navigate(['/home']);
               },
               err => {
                 el.dismiss();

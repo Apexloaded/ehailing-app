@@ -21,7 +21,7 @@ export class ApiService {
     ) {
         this.apiUrl = envService.api;
     }
-
+e
     getApi(url: string): Observable<any> {
         const apiUrl = `${this.apiUrl}/${url}`;
         return this.http.get(apiUrl, httpOptions).pipe(

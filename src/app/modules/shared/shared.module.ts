@@ -8,6 +8,7 @@ import { ProfilePopoverComponent } from '../../components/profile-popover/profil
 import { AngularRaveModule } from 'angular-rave';
 import { ResetPasswordComponent } from '../../components/reset-password/reset-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { environment } from 'src/environments/environment.prod';
 
 
 
@@ -19,10 +20,10 @@ import { ReactiveFormsModule } from '@angular/forms';
       ResetPasswordComponent
   ],
   imports: [
-      Angular4PaystackModule.forRoot('pk_test_6a8eb7d53f4187cc1bb9373d71f25f2d9c5c45be'),
+      Angular4PaystackModule.forRoot(environment.PAYSTACK_KEY),
       AngularRaveModule.forRoot({
-          key: 'FLWPUBK_TEST-0d6991be7e23edefb730d387a8cac8e1-X',
-          isTest: true
+          key: environment.FLUTTERWAVE_KEY,
+          isTest: false
       }),
       CommonModule,
       IonicModule,
